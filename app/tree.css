@@ -1,9 +1,10 @@
-* {
-    line-height: 30px;
+body {
+    line-height: 40px;
+    font-size: 1.2em;
 }
 
 .sub-node {
-    padding-left: 10px;
+    padding-left: 20px;
 }
 
 .sub-node-name {
