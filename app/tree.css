@@ -1,8 +1,8 @@
-*{
+* {
     line-height: 30px;
 }
 
-.sub-node{
+.sub-node {
     padding-left: 10px;
 }
 
@@ -10,18 +10,30 @@
     font-weight: normal;
 }
 
-.super-node-name{
+.super-node-name {
     font-weight: 800;
 }
 
-.add-node{
+.add-node {
     cursor: pointer;
 }
 
-.remove-node{
+.add-node:before {
+    content: " + ";
+}
+
+.remove-node {
     cursor: pointer;
 }
 
-.node-collapse{
+.remove-node:before {
+    content: " - ";
+}
+
+.node-collapse {
     cursor: pointer;
+}
+
+.node-collapse:before {
+    content: "\25bc \00a0";
 }
