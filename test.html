@@ -21,16 +21,16 @@
 <script>
     QUnit.module("Node");
     QUnit.test("Should check that adding child to node will add parent to child", function (assert) {
-        var parent = new Node('1', 'Parent');
-        var child = new Node('2', 'Child');
+        var parent = new Node('Parent', '1');
+        var child = new Node('Child', '2');
         parent.addChild(child);
         assert.equal(child.parentNode, parent);
     });
 
     QUnit.test("Should check that node should not produce malformed html", function (assert) {
-        var parent = new Node('1', 'Parent');
-        var child1 = new Node('2', 'Child 1');
-        var child2 = new Node('3', 'Child 2');
+        var parent = new Node('Parent', '1');
+        var child1 = new Node('Child 1', '2');
+        var child2 = new Node('Child 2', '3');
         parent.addChild(child1);
         parent.addChild(child2);
         assert.ok(checkHTML(parent.getHtml()));

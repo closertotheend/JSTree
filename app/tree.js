@@ -1,4 +1,4 @@
-function Node(id, name) {
+function Node(name, id) {
     this.name = name;
     this.parentNode = null;
     this.id = id;
@@ -52,23 +52,24 @@ function NodeRegistry() {
     this.nodes = {};
     this.createNode = function createNode(name) {
         var id = ++counter;
-        var node = new Node(id, name);
+        var node = new Node(name, id);
         this.nodes[id] = node;
         return node;
     }
 }
 
-var NodeView = {
-    anchor: document.getElementById('tree'),
-    draw: function (nodes) {
+function NodeView(id) {
+    var anchor = id ? document.getElementById(id) : document.getElementById('tree');
+
+    this.draw = function (nodes) {
         var html = '';
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
             html += node.getHtml();
         }
-        this.anchor.innerHTML = html;
+        anchor.innerHTML = html;
     }
-};
+}
 
 
 

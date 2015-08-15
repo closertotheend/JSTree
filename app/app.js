@@ -1,4 +1,5 @@
-NodeView.draw(mockNodes());
+var nodeView = new NodeView();
+nodeView.draw(mockNodes());
 
 function mockNodes() {
     var nodeRegistry = new NodeRegistry();
