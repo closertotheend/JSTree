@@ -67,6 +67,7 @@ function NodeView(registry) {
         hideSubNodes();
         addClosedCollapseIconToEachNode();
         collapseIconClickHandler();
+        addIconClickHandler();
     };
 
     function renderDOM() {
@@ -94,6 +95,17 @@ function NodeView(registry) {
     }
 
 
+    function addIconClickHandler() {
+        var nodeElements = document.getElementsByClassName("add-node");
+        for (var i = 0; i < nodeElements.length; i++) {
+            var div = nodeElements[i];
+            div.addEventListener('click', function (e) {
+                e.stopPropagation();
+                closedCollapseIconClickBehaviour(this.parentNode);
+            })
+        }
+    }
+
     function collapseIconClickHandler() {
         var nodeElements = document.getElementsByClassName("node");
         for (var i = 0; i < nodeElements.length; i++) {
@@ -101,29 +113,35 @@ function NodeView(registry) {
             div.addEventListener('click', function (e) {
                 e.stopPropagation();
                 if (this.classList.contains('node-collapse-closed')) {
-                    showChildrenOnClick(this);
-                    toggleCollapseOpenIcon(this);
+                    closedCollapseIconClickBehaviour(this)
                 } else if (this.classList.contains('node-collapse-open')) {
-                    closeChildrenOnClick(this);
-                    toggleCollapseClosedIcon(this);
+                    openCollapseIconClickBehaviour(this)
                 }
             })
         }
+    }
 
-        function showChildrenOnClick(element) {
-            for (var i = 0; i < element.childNodes.length; i++) {
-                var childNodeElements = element.childNodes[i];
-                if (isNodeElement(childNodeElements)) {
-                    show(childNodeElements);
-                }
-            }
-        }
-
+    function openCollapseIconClickBehaviour(element) {
+        closeChildrenOnClick(element);
+        toggleCollapseClosedIcon(element);
         function closeChildrenOnClick(element) {
             for (var i = 0; i < element.childNodes.length; i++) {
                 var childNodeElements = element.childNodes[i];
                 if (isNodeElement(childNodeElements)) {
                     hide(childNodeElements);
+                }
+            }
+        }
+    }
+
+    function closedCollapseIconClickBehaviour(element) {
+        showChildrenOnClick(element);
+        toggleCollapseOpenIcon(element);
+        function showChildrenOnClick(element) {
+            for (var i = 0; i < element.childNodes.length; i++) {
+                var childNodeElements = element.childNodes[i];
+                if (isNodeElement(childNodeElements)) {
+                    show(childNodeElements);
                 }
             }
         }
