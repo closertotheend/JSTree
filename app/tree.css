@@ -35,6 +35,12 @@ body {
     cursor: pointer;
 }
 
-.node-collapse:before {
+.node-collapse-closed:before {
+    cursor: pointer;
+    content: "\25ba \00a0";
+}
+
+.node-collapse-open:before {
+    cursor: pointer;
     content: "\25bc \00a0";
 }

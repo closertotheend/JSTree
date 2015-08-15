@@ -48,13 +48,6 @@
         assert.ok(parent2.id);
         assert.notEqual(parent1.id, parent2);
     });
-
-    QUnit.test("Should check that nodeRegistry keeps nodes in registry after creation", function (assert) {
-        var parent1 = this.nodeRegistry.createNode('Parent 1');
-        var parent2 = this.nodeRegistry.createNode('Parent 2');
-        assert.equal(parent1, this.nodeRegistry.nodes[1]);
-        assert.equal(parent2, this.nodeRegistry.nodes[2]);
-    });
 </script>
 
 </body>

@@ -7,7 +7,6 @@ function Node(name, id) {
 
     this.getHtml = function () {
         var html = startingDiv();
-        html += '<span class="node-collapse"></span>';
 
         if (isSuperNode()) {
             html += '<span class="super-node-name">' + name + '</span>';
@@ -26,7 +25,7 @@ function Node(name, id) {
         return html;
 
         function startingDiv() {
-            var html = '<div data-node-id="' + that.id + '" class="';
+            var html = '<div data-node-id="' + that.id + '" class="node ';
             html += isSuperNode() ? 'super-node' : 'sub-node';
             html += '">';
             return html;
@@ -49,19 +48,29 @@ function Node(name, id) {
 
 function NodeRegistry() {
     var counter = 0;
-    this.nodes = {};
+    var allNodes = {};
+    this.nodes;
     this.createNode = function createNode(name) {
         var id = ++counter;
         var node = new Node(name, id);
-        this.nodes[id] = node;
+        allNodes[id] = node;
         return node;
     }
 }
 
-function NodeView(id) {
-    var anchor = id ? document.getElementById(id) : document.getElementById('tree');
+function NodeView(registry) {
+    var anchor = document.getElementById('tree');
+    var registry = registry;
 
-    this.draw = function (nodes) {
+    this.render = function (nodes) {
+        renderDOM();
+        hideSubNodes();
+        addClosedCollapseIconToEachNode();
+        collapseIconClickHandler();
+    };
+
+    function renderDOM() {
+        var nodes = registry.nodes;
         var html = '';
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
@@ -69,6 +78,79 @@ function NodeView(id) {
         }
         anchor.innerHTML = html;
     }
+
+    function hideSubNodes() {
+        var subNodes = document.getElementsByClassName("sub-node");
+        for (var i = 0; i < subNodes.length; i++) {
+            hide(subNodes[i]);
+        }
+    }
+
+    function addClosedCollapseIconToEachNode() {
+        var nodeElements = document.getElementsByClassName("node");
+        for (var i = 0; i < nodeElements.length; i++) {
+            toggleCollapseClosedIcon(nodeElements[i]);
+        }
+    }
+
+
+    function collapseIconClickHandler() {
+        var nodeElements = document.getElementsByClassName("node");
+        for (var i = 0; i < nodeElements.length; i++) {
+            var div = nodeElements[i];
+            div.addEventListener('click', function (e) {
+                e.stopPropagation();
+                if (this.classList.contains('node-collapse-closed')) {
+                    showChildrenOnClick(this);
+                    toggleCollapseOpenIcon(this);
+                } else if (this.classList.contains('node-collapse-open')) {
+                    closeChildrenOnClick(this);
+                    toggleCollapseClosedIcon(this);
+                }
+            })
+        }
+
+        function showChildrenOnClick(element) {
+            for (var i = 0; i < element.childNodes.length; i++) {
+                var childNodeElements = element.childNodes[i];
+                if (isNodeElement(childNodeElements)) {
+                    show(childNodeElements);
+                }
+            }
+        }
+
+        function closeChildrenOnClick(element) {
+            for (var i = 0; i < element.childNodes.length; i++) {
+                var childNodeElements = element.childNodes[i];
+                if (isNodeElement(childNodeElements)) {
+                    hide(childNodeElements);
+                }
+            }
+        }
+    }
+
+    function isNodeElement(childNode) {
+        return childNode.hasAttribute("data-node-id");
+    }
+
+    function toggleCollapseClosedIcon(element) {
+        element.classList.remove('node-collapse-open');
+        element.classList.add('node-collapse-closed');
+    }
+
+    function toggleCollapseOpenIcon(element) {
+        element.classList.add('node-collapse-open');
+        element.classList.remove('node-collapse-closed');
+    }
+
+    function hide(element) {
+        element.style.display = 'none';
+    }
+
+    function show(element) {
+        element.style.display = 'block';
+    }
+
 }
 
 
