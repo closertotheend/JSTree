@@ -1,0 +1,27 @@
+*{
+    line-height: 30px;
+}
+
+.sub-node{
+    padding-left: 10px;
+}
+
+.sub-node-name {
+    font-weight: normal;
+}
+
+.super-node-name{
+    font-weight: 800;
+}
+
+.add-node{
+    cursor: pointer;
+}
+
+.remove-node{
+    cursor: pointer;
+}
+
+.node-collapse{
+    cursor: pointer;
+}
