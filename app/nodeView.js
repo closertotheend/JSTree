@@ -1,68 +1,8 @@
-function Node(name, id) {
-    this.name = name;
-    this.parentNode = null;
-    this.id = id;
-    var that = this;
-    var childNodes = [];
-
-    this.getHtml = function () {
-        var html = startingDiv();
-
-        if (isSuperNode()) {
-            html += '<span class="super-node-name">' + name + '</span>';
-        } else {
-            html += '<span class="sub-node-name">' + name + '</span>';
-        }
-
-        html += '<span class="add-node"></span><span class="remove-node"></span>';
-        if (hasChildNodes()) {
-            for (var i = 0; i < childNodes.length; i++) {
-                var node = childNodes[i];
-                html += node.getHtml();
-            }
-        }
-        html += '</div>';
-        return html;
-
-        function startingDiv() {
-            var html = '<div data-node-id="' + that.id + '" class="node ';
-            html += isSuperNode() ? 'super-node' : 'sub-node';
-            html += '">';
-            return html;
-        }
-    };
-
-    this.addChild = function (child) {
-        child.parentNode = that;
-        childNodes.push(child);
-    };
-
-    function isSuperNode() {
-        return !that.parentNode;
-    }
-
-    function hasChildNodes() {
-        return childNodes.length != 0;
-    }
-}
-
-function NodeRegistry() {
-    var counter = 0;
-    var allNodes = {};
-    this.nodes;
-    this.createNode = function createNode(name) {
-        var id = ++counter;
-        var node = new Node(name, id);
-        allNodes[id] = node;
-        return node;
-    }
-}
-
 function NodeView(registry) {
     var anchor = document.getElementById('tree');
     var registry = registry;
 
-    this.render = function (nodes) {
+    this.render = function () {
         renderDOM();
         hideSubNodes();
         addClosedCollapseIconToEachNode();
@@ -88,7 +28,7 @@ function NodeView(registry) {
     }
 
     function addClosedCollapseIconToEachNode() {
-        var nodeElements = document.getElementsByClassName("node");
+        var nodeElements = document.getElementsByClassName('collapse-indicator');
         for (var i = 0; i < nodeElements.length; i++) {
             toggleCollapseClosedIcon(nodeElements[i]);
         }
@@ -107,7 +47,7 @@ function NodeView(registry) {
     }
 
     function collapseIconClickHandler() {
-        var nodeElements = document.getElementsByClassName("node");
+        var nodeElements = document.getElementsByClassName("collapse-indicator");
         for (var i = 0; i < nodeElements.length; i++) {
             var div = nodeElements[i];
             div.addEventListener('click', function (e) {
@@ -122,26 +62,26 @@ function NodeView(registry) {
     }
 
     function openCollapseIconClickBehaviour(element) {
-        closeChildrenOnClick(element);
+        hideChildren(element.parentNode);
         toggleCollapseClosedIcon(element);
-        function closeChildrenOnClick(element) {
+        function hideChildren(element) {
             for (var i = 0; i < element.childNodes.length; i++) {
-                var childNodeElements = element.childNodes[i];
-                if (isNodeElement(childNodeElements)) {
-                    hide(childNodeElements);
+                var childNodeElement = element.childNodes[i];
+                if (isNodeElement(childNodeElement)) {
+                    hide(childNodeElement);
                 }
             }
         }
     }
 
     function closedCollapseIconClickBehaviour(element) {
-        showChildrenOnClick(element);
+        showChildren(element.parentNode);
         toggleCollapseOpenIcon(element);
-        function showChildrenOnClick(element) {
+        function showChildren(element) {
             for (var i = 0; i < element.childNodes.length; i++) {
-                var childNodeElements = element.childNodes[i];
-                if (isNodeElement(childNodeElements)) {
-                    show(childNodeElements);
+                var childNodeElement = element.childNodes[i];
+                if (isNodeElement(childNodeElement)) {
+                    show(childNodeElement);
                 }
             }
         }
