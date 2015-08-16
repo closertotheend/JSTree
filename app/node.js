@@ -2,13 +2,14 @@ function Node(name, id) {
     this.name = name;
     this.parentNode = null;
     this.id = id;
+    this.childNodes = [];
+
     var that = this;
-    var childNodes = [];
 
     this.getHtml = function () {
         var html = startingDiv();
         html += '<span class="collapse-indicator"></span>';
-        if (isSuperNode()) {
+        if (this.isSuperNode()) {
             html += '<span class="super-node-name">' + name + '</span>';
         } else {
             html += '<span class="sub-node-name">' + name + '</span>';
@@ -16,8 +17,8 @@ function Node(name, id) {
 
         html += '<span class="add-node"></span><span class="remove-node"></span>';
         if (hasChildNodes()) {
-            for (var i = 0; i < childNodes.length; i++) {
-                var node = childNodes[i];
+            for (var i = 0; i < this.childNodes.length; i++) {
+                var node = this.childNodes[i];
                 html += node.getHtml();
             }
         }
@@ -26,7 +27,7 @@ function Node(name, id) {
 
         function startingDiv() {
             var html = '<div data-node-id="' + that.id + '" class="node ';
-            html += isSuperNode() ? 'super-node' : 'sub-node';
+            html += that.isSuperNode() ? 'super-node' : 'sub-node';
             html += '">';
             return html;
         }
@@ -34,14 +35,14 @@ function Node(name, id) {
 
     this.addChild = function (child) {
         child.parentNode = that;
-        childNodes.push(child);
+        this.childNodes.push(child);
     };
 
-    function isSuperNode() {
+    this.isSuperNode = function() {
         return !that.parentNode;
-    }
+    };
 
     function hasChildNodes() {
-        return childNodes.length != 0;
+        return that.childNodes.length != 0;
     }
 }

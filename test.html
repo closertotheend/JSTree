@@ -49,6 +49,31 @@
         assert.ok(parent2.id);
         assert.notEqual(parent1.id, parent2);
     });
+
+    QUnit.test("Should check that nodeRegistry can retrieve node by id", function (assert) {
+        var parent1 = this.nodeRegistry.createNode('Parent 1');
+        var nodeFromRegistry = this.nodeRegistry.getNodeById(parent1.id);
+        assert.equal(parent1, nodeFromRegistry);
+    });
+
+    QUnit.test("Should check that nodeRegistry can delete ordinary and supernode", function (assert) {
+        var parent = this.nodeRegistry.createNode('Parent');
+        var child1 = this.nodeRegistry.createNode('Child1');
+        var child2 = this.nodeRegistry.createNode('Child2');
+        parent.addChild(child1);
+        parent.addChild(child2);
+        this.nodeRegistry.nodes = [parent];
+
+        assert.equal(parent.childNodes.length, 2);
+        this.nodeRegistry.removeNode(child1);
+        assert.equal(parent.childNodes.length, 1);
+        this.nodeRegistry.removeNode(child2);
+        assert.equal(parent.childNodes.length, 0);
+
+        assert.equal(this.nodeRegistry.nodes.length, 1);
+        this.nodeRegistry.removeNode(parent);
+        assert.equal(this.nodeRegistry.nodes.length, 0);
+    });
 </script>
 
 </body>

@@ -20,39 +20,28 @@ var DOMHelper = {
         return node.getElementsByClassName('add-node')[0];
     },
 
+    getRemoveIconOfNode: function (node) {
+        return node.getElementsByClassName('remove-node')[0];
+    },
+
     getFirstSubNodeOfNode: function (node) {
         return node.getElementsByClassName('node')[0];
+    },
+
+    getNodeDataId: function (node) {
+        return node.getAttribute("data-node-id");
     },
 
     getNodeFromAddIcon: function (addIcon) {
         return addIcon.parentNode;
     },
 
-    getNodeFromCollapseIcon: function (collapseIcon) {
-        return collapseIcon.parentNode;
+    getNodeFromRemoveIcon: function (removeIcon) {
+        return removeIcon.parentNode;
     },
 
-    createNewFolderForm: function () {
-        var newFolderDiv = document.createElement("div");
-        newFolderDiv.className = "insert-new-node";
-
-        var folderNameInput = document.createElement("input");
-        folderNameInput.type = 'text';
-        folderNameInput.className = 'insert-new-node-name';
-        newFolderDiv.appendChild(folderNameInput);
-
-        var folderNameInputSubmit = document.createElement("input");
-        folderNameInputSubmit.type = 'button';
-        folderNameInputSubmit.className = 'insert-new-node-save-button';
-        folderNameInputSubmit.value = 'Save';
-        newFolderDiv.appendChild(folderNameInputSubmit);
-
-        var folderNameInputCancel = document.createElement("input");
-        folderNameInputCancel.type = 'button';
-        folderNameInputCancel.className = 'insert-new-node-cancel-button';
-        folderNameInputCancel.value = 'Cancel';
-        newFolderDiv.appendChild(folderNameInputCancel);
-        return newFolderDiv;
+    getNodeFromCollapseIcon: function (collapseIcon) {
+        return collapseIcon.parentNode;
     },
 
     getNodeNameOfNewFolderForm: function (newFolderForm) {
@@ -71,12 +60,12 @@ var DOMHelper = {
         return newFolderForm.getElementsByClassName('insert-new-node-save-button')[0];
     },
 
-    getNewFolderFormFromCancelButton: function (cancelButton) {
-        return cancelButton.parentNode;
-    },
-
     getNodeOfNewFolderForm: function (newFolderForm) {
         return newFolderForm.parentNode;
+    },
+
+    getNewFolderFormFromCancelButton: function (cancelButton) {
+        return cancelButton.parentNode;
     },
 
     newFolderFormDoesNotExist: function (element) {
@@ -115,6 +104,29 @@ var DOMHelper = {
 
     show: function (element) {
         element.style.display = 'block';
+    },
+
+    createNewFolderForm: function () {
+        var newFolderDiv = document.createElement("div");
+        newFolderDiv.className = "insert-new-node";
+
+        var folderNameInput = document.createElement("input");
+        folderNameInput.type = 'text';
+        folderNameInput.className = 'insert-new-node-name';
+        newFolderDiv.appendChild(folderNameInput);
+
+        var folderNameInputSubmit = document.createElement("input");
+        folderNameInputSubmit.type = 'button';
+        folderNameInputSubmit.className = 'insert-new-node-save-button';
+        folderNameInputSubmit.value = 'Save';
+        newFolderDiv.appendChild(folderNameInputSubmit);
+
+        var folderNameInputCancel = document.createElement("input");
+        folderNameInputCancel.type = 'button';
+        folderNameInputCancel.className = 'insert-new-node-cancel-button';
+        folderNameInputCancel.value = 'Cancel';
+        newFolderDiv.appendChild(folderNameInputCancel);
+        return newFolderDiv;
     },
 
     hideSubNodes: function () {

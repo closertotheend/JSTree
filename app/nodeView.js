@@ -27,10 +27,12 @@ function NodeView(registry) {
 
     function setNodeHandlers(node) {
         var collapseIcon = DOMHelper.getCollapseIconOfNode(node);
-        DOMHelper.makeCollapseIconClosed(collapseIcon);
         setCollapseIconClickHandler(collapseIcon);
         var addIcon = DOMHelper.getAddIconOfNode(node);
         setAddIconClickHandler(addIcon);
+        var removeIcon = DOMHelper.getRemoveIconOfNode(node);
+        setRemoveIconClickHandler(removeIcon);
+        DOMHelper.makeCollapseIconClosed(collapseIcon);
     }
 
     function setCollapseIconClickHandler(collapseIcon) {
@@ -41,6 +43,17 @@ function NodeView(registry) {
             } else if (DOMHelper.isCollapseIconOpen(this)) {
                 closeTreeViaCollapseIcon(this)
             }
+        })
+    }
+
+    function setRemoveIconClickHandler(removeIcon) {
+        removeIcon.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var node = DOMHelper.getNodeFromRemoveIcon(this);
+            var nodeId = DOMHelper.getNodeDataId(node);
+            var nodeObject = registry.getNodeById(nodeId);
+            registry.removeNode(nodeObject);
+            node.remove();
         })
     }
 
@@ -67,20 +80,21 @@ function NodeView(registry) {
         function setSaveButtonClickHandler(saveButton) {
             saveButton.addEventListener('click', function (e) {
                 var newFolderForm = DOMHelper.getNewFolderFormFromCancelButton(this);
-                var node = DOMHelper.getNodeOfNewFolderForm(newFolderForm);
-
-                var nodeId = node.getAttribute("data-node-id");
-                var newNodeName = DOMHelper.getNodeNameOfNewFolderForm(newFolderForm);
-                var newNodeObject = nodeRegistry.createNode(newNodeName);
-                var nodeObject = nodeRegistry.allNodes[nodeId];
-                nodeObject.addChild(newNodeObject);
-
-                newFolderForm.insertAdjacentHTML('afterend', newNodeObject.getHtml());
-
-                var newNode = DOMHelper.getFirstSubNodeOfNode(node);
+                var newNode = createNode(newFolderForm);
                 setNodeHandlers(newNode);
                 newFolderForm.remove();
             });
+
+            function createNode(newFolderForm) {
+                var parentNode = DOMHelper.getNodeOfNewFolderForm(newFolderForm);
+                var parentNodeId = DOMHelper.getNodeDataId(parentNode);
+                var newNodeName = DOMHelper.getNodeNameOfNewFolderForm(newFolderForm);
+                var newNodeObject = registry.createNode(newNodeName);
+                var parentNodeObject = registry.getNodeById(parentNodeId);
+                parentNodeObject.addChild(newNodeObject);
+                newFolderForm.insertAdjacentHTML('afterend', newNodeObject.getHtml());
+                return DOMHelper.getFirstSubNodeOfNode(parentNode);
+            }
         }
 
         function setCancelButtonClickHandler(cancelButton) {
