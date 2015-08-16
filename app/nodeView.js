@@ -4,10 +4,8 @@ function NodeView(registry) {
 
     this.render = function () {
         renderDOM();
+        setNodesHandlers();
         DOMHelper.hideSubNodes();
-        DOMHelper.addClosedCollapseIconToEachNode();
-        setCollapseIconClickHandler();
-        setAddIconClickHandler();
     };
 
     function renderDOM() {
@@ -20,24 +18,58 @@ function NodeView(registry) {
         anchor.innerHTML = html;
     }
 
-    function setAddIconClickHandler() {
-        var addIcons = DOMHelper.getAllAddIcons();
+    function setNodesHandlers() {
+        var nodes = DOMHelper.getAllNodes();
+        for (var i = 0; i < nodes.length; i++) {
+            setNodeHandlers(nodes[i]);
+        }
+    }
 
-        for (var i = 0; i < addIcons.length; i++) {
-            var addIcon = addIcons[i];
-            addIcon.addEventListener('click', function (e) {
-                e.stopPropagation();
-                var node = DOMHelper.getNodeFromAddIcon(this);
-                if (DOMHelper.newFolderFormDoesNotExist(node)) {
-                    var newFolderForm = DOMHelper.createNewFolderForm();
-                    node.insertBefore(newFolderForm, DOMHelper.getFirstSubNodeOfNode(node));
-                    var cancelButton = DOMHelper.getCancelButtonOfNewFolderForm(newFolderForm);
-                    setCancelButtonClickHandler(cancelButton);
-                    var saveButton = DOMHelper.getSaveButtonOfNewFolderForm(newFolderForm);
-                    setSaveButtonClickHandler(saveButton);
-                }
-                openTreeViaIcon(DOMHelper.getCollapseIconOfNode(node));
-            })
+    function setNodeHandlers(node) {
+        var collapseIcon = DOMHelper.getCollapseIconOfNode(node);
+        DOMHelper.makeCollapseIconClosed(collapseIcon);
+        setCollapseIconClickHandler(collapseIcon);
+        var addIcon = DOMHelper.getAddIconOfNode(node);
+        setAddIconClickHandler(addIcon);
+    }
+
+    function setAddIconClickHandler(addIcon) {
+        addIcon.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var node = DOMHelper.getNodeFromAddIcon(this);
+            if (DOMHelper.newFolderFormDoesNotExist(node)) {
+                createNewForm();
+            }
+            openTreeViaCollapseIcon(DOMHelper.getCollapseIconOfNode(node));
+
+            function createNewForm() {
+                var newFolderForm = DOMHelper.createNewFolderForm();
+                var firstSubNodeOfNode = DOMHelper.getFirstSubNodeOfNode(node);
+                node.insertBefore(newFolderForm, firstSubNodeOfNode);
+                var cancelButton = DOMHelper.getCancelButtonOfNewFolderForm(newFolderForm);
+                setCancelButtonClickHandler(cancelButton);
+                var saveButton = DOMHelper.getSaveButtonOfNewFolderForm(newFolderForm);
+                setSaveButtonClickHandler(saveButton);
+            }
+        });
+
+        function setSaveButtonClickHandler(saveButton) {
+            saveButton.addEventListener('click', function (e) {
+                var newFolderForm = DOMHelper.getNewFolderFormFromCancelButton(this);
+                var node = DOMHelper.getNodeOfNewFolderForm(newFolderForm);
+
+                var nodeId = node.getAttribute("data-node-id");
+                var newNodeName = DOMHelper.getNodeNameOfNewFolderForm(newFolderForm);
+                var newNodeObject = nodeRegistry.createNode(newNodeName);
+                var nodeObject = nodeRegistry.allNodes[nodeId];
+                nodeObject.addChild(newNodeObject);
+
+                newFolderForm.insertAdjacentHTML('afterend', newNodeObject.getHtml());
+
+                var newNode = DOMHelper.getFirstSubNodeOfNode(node);
+                setNodeHandlers(newNode);
+                newFolderForm.remove();
+            });
         }
 
         function setCancelButtonClickHandler(cancelButton) {
@@ -45,29 +77,17 @@ function NodeView(registry) {
                 DOMHelper.getNewFolderFormFromCancelButton(this).remove();
             });
         }
-
-        function setSaveButtonClickHandler(saveButton) {
-            saveButton.addEventListener('click', function (e) {
-                var newFolderForm = DOMHelper.getNewFolderFormFromCancelButton(this);
-                var newNodeName = DOMHelper.getNodeNameOfNewFolderForm(newFolderForm);
-                alert(newNodeName)
-            });
-        }
     }
 
-    function setCollapseIconClickHandler() {
-        var collapseIcons = DOMHelper.getAllCollapseIcons();
-        for (var i = 0; i < collapseIcons.length; i++) {
-            var collapseIcon = collapseIcons[i];
-            collapseIcon.addEventListener('click', function (e) {
-                e.stopPropagation();
-                if (DOMHelper.isCollapseIconClosed(this)) {
-                    openTreeViaIcon(this)
-                } else if (DOMHelper.isCollapseIconOpen(this)) {
-                    closeTreeViaCollapseIcon(this)
-                }
-            })
-        }
+    function setCollapseIconClickHandler(collapseIcon) {
+        collapseIcon.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (DOMHelper.isCollapseIconClosed(this)) {
+                openTreeViaCollapseIcon(this)
+            } else if (DOMHelper.isCollapseIconOpen(this)) {
+                closeTreeViaCollapseIcon(this)
+            }
+        })
     }
 
     function closeTreeViaCollapseIcon(collapseIcon) {
@@ -76,7 +96,7 @@ function NodeView(registry) {
         DOMHelper.makeCollapseIconClosed(collapseIcon);
     }
 
-    function openTreeViaIcon(collapseIcon) {
+    function openTreeViaCollapseIcon(collapseIcon) {
         var node = DOMHelper.getNodeFromCollapseIcon(collapseIcon);
         DOMHelper.showChildrenOfNode(node);
         DOMHelper.makeCollapseIconOpen(collapseIcon);

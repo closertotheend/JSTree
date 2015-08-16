@@ -4,24 +4,24 @@ var DOMHelper = {
         return document.getElementById('tree');
     },
 
+    getAllNodes: function () {
+        return document.getElementsByClassName('node');
+    },
+
     getAllSubNodes: function () {
         return document.getElementsByClassName("sub-node");
     },
 
-    getAllCollapseIcons: function () {
-        return document.getElementsByClassName("collapse-indicator");
+    getCollapseIconOfNode: function (node) {
+        return node.getElementsByClassName('collapse-indicator')[0];
     },
 
-    getAllAddIcons: function () {
-        return document.getElementsByClassName("add-node");
+    getAddIconOfNode: function (node) {
+        return node.getElementsByClassName('add-node')[0];
     },
 
-    getCollapseIconOfNode: function (nodeDiv) {
-        return nodeDiv.getElementsByClassName('collapse-indicator')[0];
-    },
-
-    getFirstSubNodeOfNode: function (nodeDiv) {
-        return nodeDiv.getElementsByClassName('node')[0];
+    getFirstSubNodeOfNode: function (node) {
+        return node.getElementsByClassName('node')[0];
     },
 
     getNodeFromAddIcon: function (addIcon) {
@@ -75,6 +75,10 @@ var DOMHelper = {
         return cancelButton.parentNode;
     },
 
+    getNodeOfNewFolderForm: function (newFolderForm) {
+        return newFolderForm.parentNode;
+    },
+
     newFolderFormDoesNotExist: function (element) {
         return element.getElementsByClassName('insert-new-node').length == 0;
     },
@@ -114,16 +118,9 @@ var DOMHelper = {
     },
 
     hideSubNodes: function () {
-        var subNodes = DOMHelper.getAllSubNodes();
+        var subNodes = this.getAllSubNodes();
         for (var i = 0; i < subNodes.length; i++) {
-            DOMHelper.hide(subNodes[i]);
-        }
-    },
-
-    addClosedCollapseIconToEachNode: function () {
-        var collapseIcons = DOMHelper.getAllCollapseIcons();
-        for (var i = 0; i < collapseIcons.length; i++) {
-            DOMHelper.makeCollapseIconClosed(collapseIcons[i]);
+            this.hide(subNodes[i]);
         }
     },
 
