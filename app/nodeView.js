@@ -6,8 +6,8 @@ function NodeView(registry) {
         renderDOM();
         hideSubNodes();
         addClosedCollapseIconToEachNode();
-        collapseIconClickHandler();
-        addIconClickHandler();
+        setCollapseIconClickHandler();
+        setAddIconClickHandler();
     };
 
     function renderDOM() {
@@ -34,40 +34,58 @@ function NodeView(registry) {
         }
     }
 
-    function addIconClickHandler() {
-        var nodeElements = DOMHelper.getAllAddIcons();
+    function setAddIconClickHandler() {
+        var addIcons = DOMHelper.getAllAddIcons();
 
-        for (var i = 0; i < nodeElements.length; i++) {
-            var div = nodeElements[i];
-            div.addEventListener('click', function (e) {
+        for (var i = 0; i < addIcons.length; i++) {
+            var addIcon = addIcons[i];
+            addIcon.addEventListener('click', function (e) {
                 e.stopPropagation();
-                var nodeDiv = this.parentNode;
-                if (DOMHelper.newFolderFormDoesNotExist(nodeDiv)) {
-                    nodeDiv.insertBefore(DOMHelper.createNewFolderForm(), DOMHelper.getFirstSubNodeOfNode(nodeDiv));
+                var node = DOMHelper.getNodeFromAddIcon(this);
+                if (DOMHelper.newFolderFormDoesNotExist(node)) {
+                    var newFolderForm = DOMHelper.createNewFolderForm();
+                    node.insertBefore(newFolderForm, DOMHelper.getFirstSubNodeOfNode(node));
+                    var cancelButton = DOMHelper.getCancelButtonOfNewFolderForm(newFolderForm);
+                    setCancelButtonClickHandler(cancelButton);
+                    var saveButton = DOMHelper.getSaveButtonOfNewFolderForm(newFolderForm);
+                    setSaveButtonClickHandler(saveButton);
                 }
-                closedCollapseIconClickBehaviour(DOMHelper.getCollapseIconOfNode(nodeDiv));
+                openTreeViaIcon(DOMHelper.getCollapseIconOfNode(node));
             })
+        }
+
+        function setCancelButtonClickHandler(cancelButton) {
+            cancelButton.addEventListener('click', function (e) {
+                DOMHelper.getNewFolderFormFromCancelButton(this).remove();
+            });
+        }
+
+        function setSaveButtonClickHandler(saveButton) {
+            saveButton.addEventListener('click', function (e) {
+                alert();
+            });
         }
     }
 
-    function collapseIconClickHandler() {
+    function setCollapseIconClickHandler() {
         var collapseIcons = DOMHelper.getAllCollapseIcons();
         for (var i = 0; i < collapseIcons.length; i++) {
             var collapseIcon = collapseIcons[i];
             collapseIcon.addEventListener('click', function (e) {
                 e.stopPropagation();
                 if (DOMHelper.isCollapseIconClosed(this)) {
-                    closedCollapseIconClickBehaviour(this)
+                    openTreeViaIcon(this)
                 } else if (DOMHelper.isCollapseIconOpen(this)) {
-                    openCollapseIconClickBehaviour(this)
+                    closeTreeViaCollapseIcon(this)
                 }
             })
         }
     }
 
-    function openCollapseIconClickBehaviour(icon) {
-        hideChildren(icon.parentNode);
-        DOMHelper.makeCollapseIconClosed(icon);
+    function closeTreeViaCollapseIcon(collapseIcon) {
+        var node = DOMHelper.getNodeFromCollapseIcon(collapseIcon);
+        hideChildren(node);
+        DOMHelper.makeCollapseIconClosed(collapseIcon);
         function hideChildren(element) {
             for (var i = 0; i < element.childNodes.length; i++) {
                 var childNodeElement = element.childNodes[i];
@@ -78,9 +96,10 @@ function NodeView(registry) {
         }
     }
 
-    function closedCollapseIconClickBehaviour(icon) {
-        showChildren(icon.parentNode);
-        DOMHelper.makeCollapseIconOpen(icon);
+    function openTreeViaIcon(collapseIcon) {
+        var node = DOMHelper.getNodeFromCollapseIcon(collapseIcon);
+        showChildren(node);
+        DOMHelper.makeCollapseIconOpen(collapseIcon);
         function showChildren(element) {
             for (var i = 0; i < element.childNodes.length; i++) {
                 var childNodeElement = element.childNodes[i];
