@@ -44,3 +44,7 @@ body {
     cursor: pointer;
     content: "\25bc \00a0";
 }
+
+.insert-new-node{
+    padding-left: 20px;
+}

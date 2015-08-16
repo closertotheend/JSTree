@@ -1,5 +1,5 @@
 function NodeView(registry) {
-    var anchor = document.getElementById('tree');
+    var anchor = DOMHelper.getAnchor();
     var registry = registry;
 
     this.render = function () {
@@ -21,92 +21,74 @@ function NodeView(registry) {
     }
 
     function hideSubNodes() {
-        var subNodes = document.getElementsByClassName("sub-node");
+        var subNodes = DOMHelper.getAllSubNodes();
         for (var i = 0; i < subNodes.length; i++) {
-            hide(subNodes[i]);
+            DOMHelper.hide(subNodes[i]);
         }
     }
 
     function addClosedCollapseIconToEachNode() {
-        var nodeElements = document.getElementsByClassName('collapse-indicator');
-        for (var i = 0; i < nodeElements.length; i++) {
-            toggleCollapseClosedIcon(nodeElements[i]);
+        var collapseIcons = DOMHelper.getAllCollapseIcons();
+        for (var i = 0; i < collapseIcons.length; i++) {
+            DOMHelper.makeCollapseIconClosed(collapseIcons[i]);
         }
     }
 
-
     function addIconClickHandler() {
-        var nodeElements = document.getElementsByClassName("add-node");
+        var nodeElements = DOMHelper.getAllAddIcons();
+
         for (var i = 0; i < nodeElements.length; i++) {
             var div = nodeElements[i];
             div.addEventListener('click', function (e) {
                 e.stopPropagation();
-                closedCollapseIconClickBehaviour(this.parentNode);
+                var nodeDiv = this.parentNode;
+                if (DOMHelper.newFolderFormDoesNotExist(nodeDiv)) {
+                    nodeDiv.insertBefore(DOMHelper.createNewFolderForm(), DOMHelper.getFirstSubNodeOfNodeDiv(nodeDiv));
+                }
+                closedCollapseIconClickBehaviour(DOMHelper.getCollapseIconFromNodeDiv(nodeDiv));
             })
         }
     }
 
     function collapseIconClickHandler() {
-        var nodeElements = document.getElementsByClassName("collapse-indicator");
-        for (var i = 0; i < nodeElements.length; i++) {
-            var div = nodeElements[i];
-            div.addEventListener('click', function (e) {
+        var collapseIcons = DOMHelper.getAllCollapseIcons();
+        for (var i = 0; i < collapseIcons.length; i++) {
+            var collapseIcon = collapseIcons[i];
+            collapseIcon.addEventListener('click', function (e) {
                 e.stopPropagation();
-                if (this.classList.contains('node-collapse-closed')) {
+                if (DOMHelper.isCollapseIconClosed(this)) {
                     closedCollapseIconClickBehaviour(this)
-                } else if (this.classList.contains('node-collapse-open')) {
+                } else if (DOMHelper.isCollapseIconOpen(this)) {
                     openCollapseIconClickBehaviour(this)
                 }
             })
         }
     }
 
-    function openCollapseIconClickBehaviour(element) {
-        hideChildren(element.parentNode);
-        toggleCollapseClosedIcon(element);
+    function openCollapseIconClickBehaviour(icon) {
+        hideChildren(icon.parentNode);
+        DOMHelper.makeCollapseIconClosed(icon);
         function hideChildren(element) {
             for (var i = 0; i < element.childNodes.length; i++) {
                 var childNodeElement = element.childNodes[i];
-                if (isNodeElement(childNodeElement)) {
-                    hide(childNodeElement);
+                if (DOMHelper.isNodeElement(childNodeElement)) {
+                    DOMHelper.hide(childNodeElement);
                 }
             }
         }
     }
 
-    function closedCollapseIconClickBehaviour(element) {
-        showChildren(element.parentNode);
-        toggleCollapseOpenIcon(element);
+    function closedCollapseIconClickBehaviour(icon) {
+        showChildren(icon.parentNode);
+        DOMHelper.makeCollapseIconOpen(icon);
         function showChildren(element) {
             for (var i = 0; i < element.childNodes.length; i++) {
                 var childNodeElement = element.childNodes[i];
-                if (isNodeElement(childNodeElement)) {
-                    show(childNodeElement);
+                if (DOMHelper.isNodeElement(childNodeElement)) {
+                    DOMHelper.show(childNodeElement);
                 }
             }
         }
-    }
-
-    function isNodeElement(childNode) {
-        return childNode.hasAttribute("data-node-id");
-    }
-
-    function toggleCollapseClosedIcon(element) {
-        element.classList.remove('node-collapse-open');
-        element.classList.add('node-collapse-closed');
-    }
-
-    function toggleCollapseOpenIcon(element) {
-        element.classList.add('node-collapse-open');
-        element.classList.remove('node-collapse-closed');
-    }
-
-    function hide(element) {
-        element.style.display = 'none';
-    }
-
-    function show(element) {
-        element.style.display = 'block';
     }
 
 }
