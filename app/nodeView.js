@@ -43,9 +43,9 @@ function NodeView(registry) {
                 e.stopPropagation();
                 var nodeDiv = this.parentNode;
                 if (DOMHelper.newFolderFormDoesNotExist(nodeDiv)) {
-                    nodeDiv.insertBefore(DOMHelper.createNewFolderForm(), DOMHelper.getFirstSubNodeOfNodeDiv(nodeDiv));
+                    nodeDiv.insertBefore(DOMHelper.createNewFolderForm(), DOMHelper.getFirstSubNodeOfNode(nodeDiv));
                 }
-                closedCollapseIconClickBehaviour(DOMHelper.getCollapseIconFromNodeDiv(nodeDiv));
+                closedCollapseIconClickBehaviour(DOMHelper.getCollapseIconOfNode(nodeDiv));
             })
         }
     }
@@ -71,7 +71,7 @@ function NodeView(registry) {
         function hideChildren(element) {
             for (var i = 0; i < element.childNodes.length; i++) {
                 var childNodeElement = element.childNodes[i];
-                if (DOMHelper.isNodeElement(childNodeElement)) {
+                if (isCloseable(childNodeElement)) {
                     DOMHelper.hide(childNodeElement);
                 }
             }
@@ -84,11 +84,15 @@ function NodeView(registry) {
         function showChildren(element) {
             for (var i = 0; i < element.childNodes.length; i++) {
                 var childNodeElement = element.childNodes[i];
-                if (DOMHelper.isNodeElement(childNodeElement)) {
+                if (isCloseable(childNodeElement)) {
                     DOMHelper.show(childNodeElement);
                 }
             }
         }
+    }
+
+    function isCloseable(childNodeElement) {
+        return DOMHelper.isNode(childNodeElement) || DOMHelper.isNewNodeForm(childNodeElement);
     }
 
 }

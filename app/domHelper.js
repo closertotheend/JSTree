@@ -16,11 +16,11 @@ var DOMHelper = {
         return document.getElementsByClassName("add-node");
     },
 
-    getCollapseIconFromNodeDiv: function (nodeDiv) {
+    getCollapseIconOfNode: function (nodeDiv) {
         return nodeDiv.getElementsByClassName('collapse-indicator')[0];
     },
 
-    getFirstSubNodeOfNodeDiv: function (nodeDiv) {
+    getFirstSubNodeOfNode: function (nodeDiv) {
         return nodeDiv.getElementsByClassName('node')[0];
     },
 
@@ -48,8 +48,12 @@ var DOMHelper = {
         return element.getElementsByClassName('insert-new-node').length == 0;
     },
 
-    isNodeElement: function (element) {
+    isNode: function (element) {
         return element.classList.contains('node');
+    },
+
+    isNewNodeForm: function (element) {
+        return element.classList.contains('insert-new-node');
     },
 
     makeCollapseIconClosed: function (element) {
