@@ -92,7 +92,7 @@ function NodeView(registry) {
                 var newNodeObject = registry.createNode(newNodeName);
                 var parentNodeObject = registry.getNodeById(parentNodeId);
                 parentNodeObject.addChild(newNodeObject);
-                newFolderForm.insertAdjacentHTML('afterend', newNodeObject.getHtml());
+                DOMHelper.insertHtmlAfterNewFolderForm(newFolderForm, newNodeObject.getHtml());
                 return DOMHelper.getFirstSubNodeOfNode(parentNode);
             }
         }

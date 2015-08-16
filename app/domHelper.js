@@ -64,6 +64,10 @@ var DOMHelper = {
         return newFolderForm.parentNode;
     },
 
+    insertHtmlAfterNewFolderForm: function (newFolderForm, html) {
+        newFolderForm.insertAdjacentHTML('afterend', html);
+    },
+
     getNewFolderFormFromCancelButton: function (cancelButton) {
         return cancelButton.parentNode;
     },
