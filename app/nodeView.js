@@ -33,6 +33,17 @@ function NodeView(registry) {
         setAddIconClickHandler(addIcon);
     }
 
+    function setCollapseIconClickHandler(collapseIcon) {
+        collapseIcon.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (DOMHelper.isCollapseIconClosed(this)) {
+                openTreeViaCollapseIcon(this)
+            } else if (DOMHelper.isCollapseIconOpen(this)) {
+                closeTreeViaCollapseIcon(this)
+            }
+        })
+    }
+
     function setAddIconClickHandler(addIcon) {
         addIcon.addEventListener('click', function (e) {
             e.stopPropagation();
@@ -77,17 +88,6 @@ function NodeView(registry) {
                 DOMHelper.getNewFolderFormFromCancelButton(this).remove();
             });
         }
-    }
-
-    function setCollapseIconClickHandler(collapseIcon) {
-        collapseIcon.addEventListener('click', function (e) {
-            e.stopPropagation();
-            if (DOMHelper.isCollapseIconClosed(this)) {
-                openTreeViaCollapseIcon(this)
-            } else if (DOMHelper.isCollapseIconOpen(this)) {
-                closeTreeViaCollapseIcon(this)
-            }
-        })
     }
 
     function closeTreeViaCollapseIcon(collapseIcon) {
