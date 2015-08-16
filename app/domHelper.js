@@ -38,6 +38,7 @@ var DOMHelper = {
 
         var folderNameInput = document.createElement("input");
         folderNameInput.type = 'text';
+        folderNameInput.className = 'insert-new-node-name';
         newFolderDiv.appendChild(folderNameInput);
 
         var folderNameInputSubmit = document.createElement("input");
@@ -52,6 +53,14 @@ var DOMHelper = {
         folderNameInputCancel.value = 'Cancel';
         newFolderDiv.appendChild(folderNameInputCancel);
         return newFolderDiv;
+    },
+
+    getNodeNameOfNewFolderForm: function (newFolderForm) {
+        return this.getNewNodeInputOfNewFolderForm(newFolderForm).value;
+    },
+
+    getNewNodeInputOfNewFolderForm: function (newFolderForm) {
+        return newFolderForm.getElementsByClassName('insert-new-node-name')[0];
     },
 
     getCancelButtonOfNewFolderForm: function (newFolderForm) {
@@ -102,6 +111,42 @@ var DOMHelper = {
 
     show: function (element) {
         element.style.display = 'block';
+    },
+
+    hideSubNodes: function () {
+        var subNodes = DOMHelper.getAllSubNodes();
+        for (var i = 0; i < subNodes.length; i++) {
+            DOMHelper.hide(subNodes[i]);
+        }
+    },
+
+    addClosedCollapseIconToEachNode: function () {
+        var collapseIcons = DOMHelper.getAllCollapseIcons();
+        for (var i = 0; i < collapseIcons.length; i++) {
+            DOMHelper.makeCollapseIconClosed(collapseIcons[i]);
+        }
+    },
+
+    hideChildrenOfNode: function (element) {
+        for (var i = 0; i < element.childNodes.length; i++) {
+            var childNodeElement = element.childNodes[i];
+            if (this.isCloseable(childNodeElement)) {
+                this.hide(childNodeElement);
+            }
+        }
+    },
+
+    showChildrenOfNode: function (element) {
+        for (var i = 0; i < element.childNodes.length; i++) {
+            var childNodeElement = element.childNodes[i];
+            if (this.isCloseable(childNodeElement)) {
+                this.show(childNodeElement);
+            }
+        }
+    },
+
+    isCloseable: function (childNodeElement) {
+        return this.isNode(childNodeElement) || this.isNewNodeForm(childNodeElement);
     }
 
 };
