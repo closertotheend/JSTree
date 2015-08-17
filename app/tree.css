@@ -16,7 +16,7 @@ body {
 }
 
 .add-node:before {
-    content: " ";
+    content: " (";
 }
 
 .add-node:after {
@@ -40,7 +40,7 @@ body {
 }
 
 .remove-node:after {
-    content: "Delete";
+    content: "Delete)";
     cursor: pointer;
     text-decoration: underline;
 }

@@ -1,5 +1,5 @@
 var DOMHelper = {
-
+    //COMMON
     getAnchor: function () {
         return document.getElementById('tree');
     },
@@ -12,6 +12,7 @@ var DOMHelper = {
         return document.getElementsByClassName("sub-node");
     },
 
+    //NODE
     getCollapseIconOfNode: function (node) {
         return node.getElementsByClassName('collapse-indicator')[0];
     },
@@ -24,6 +25,10 @@ var DOMHelper = {
         return node.getElementsByClassName('remove-node')[0];
     },
 
+    getEditIconOfNode: function (node) {
+        return node.getElementsByClassName('edit-node')[0];
+    },
+
     getFirstSubNodeOfNode: function (node) {
         return node.getElementsByClassName('node')[0];
     },
@@ -32,6 +37,10 @@ var DOMHelper = {
         return node.getAttribute("data-node-id");
     },
 
+    changeNameOfNode: function (node, newName) {
+        return node.getElementsByClassName('node-name')[0].innerHTML = newName;
+    },
+    //ICONS
     getNodeFromAddIcon: function (addIcon) {
         return addIcon.parentNode;
     },
@@ -40,10 +49,14 @@ var DOMHelper = {
         return removeIcon.parentNode;
     },
 
+    getNodeFromEditIcon: function (editIcon) {
+        return editIcon.parentNode;
+    },
+
     getNodeFromCollapseIcon: function (collapseIcon) {
         return collapseIcon.parentNode;
     },
-
+    //NEW FOLDER FORM
     getNodeNameOfNewFolderForm: function (newFolderForm) {
         return this.getNewNodeInputOfNewFolderForm(newFolderForm).value;
     },
@@ -72,8 +85,41 @@ var DOMHelper = {
         return cancelButton.parentNode;
     },
 
+    // NODE EDIT FORM
+    getCancelButtonOfNodeEditForm: function (nodeEditForm) {
+        return nodeEditForm.getElementsByClassName('edit-current-node-cancel-button')[0];
+    },
+
+    getNodeOfNodeEditForm: function (nodeEditForm) {
+        return nodeEditForm.parentNode;
+    },
+
+    getNewNodeNameInputOfNodeEditForm: function (nodeEditForm) {
+        return nodeEditForm.getElementsByClassName('edit-current-node-name  ')[0];
+    },
+
+    getEditedNodeNameOfNodeEditForm: function (nodeEditForm) {
+        return this.getNewNodeNameInputOfNodeEditForm(nodeEditForm).value;
+    },
+
+    getSaveButtonOfNodeEditForm: function (nodeEditForm) {
+        return nodeEditForm.getElementsByClassName('edit-current-node-save-button')[0];
+    },
+
+    getNodeEditFormFromCancelButton: function (cancelButton) {
+        return cancelButton.parentNode;
+    },
+
+    getNodeEditFormFromSaveButton: function (saveButton) {
+        return saveButton.parentNode;
+    },
+    // ELEMENTS
     newFolderFormDoesNotExist: function (element) {
         return element.getElementsByClassName('insert-new-node').length == 0;
+    },
+
+    nodeEditFormDoesNotExist: function (element) {
+        return element.getElementsByClassName('edit-current-node').length == 0;
     },
 
     isNode: function (element) {
@@ -109,7 +155,7 @@ var DOMHelper = {
     show: function (element) {
         element.style.display = 'block';
     },
-
+    // FORMS
     createNewFolderForm: function () {
         var newFolderDiv = document.createElement("div");
         newFolderDiv.className = "insert-new-node";
@@ -133,6 +179,29 @@ var DOMHelper = {
         return newFolderDiv;
     },
 
+    createEditNodeForm: function () {
+        var newFolderDiv = document.createElement("div");
+        newFolderDiv.className = "edit-current-node";
+
+        var folderNameInput = document.createElement("input");
+        folderNameInput.type = 'text';
+        folderNameInput.className = 'edit-current-node-name';
+        newFolderDiv.appendChild(folderNameInput);
+
+        var nodeNameInputSubmit = document.createElement("input");
+        nodeNameInputSubmit.type = 'button';
+        nodeNameInputSubmit.className = 'edit-current-node-save-button';
+        nodeNameInputSubmit.value = 'Save';
+        newFolderDiv.appendChild(nodeNameInputSubmit);
+
+        var nodeNameInputCancel = document.createElement("input");
+        nodeNameInputCancel.type = 'button';
+        nodeNameInputCancel.className = 'edit-current-node-cancel-button';
+        nodeNameInputCancel.value = 'Cancel';
+        newFolderDiv.appendChild(nodeNameInputCancel);
+        return newFolderDiv;
+    },
+    // ANIMATIONS AND HIGH LEVEL
     hideSubNodes: function () {
         var subNodes = this.getAllSubNodes();
         for (var i = 0; i < subNodes.length; i++) {

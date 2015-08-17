@@ -10,9 +10,9 @@ function Node(name, id) {
         var html = startingDiv();
         html += '<span class="collapse-indicator"></span>';
         if (this.isSuperNode()) {
-            html += '<span class="super-node-name">' + name + '</span>';
+            html += '<span class="node-name super-node-name">' + name + '</span>';
         } else {
-            html += '<span class="sub-node-name">' + name + '</span>';
+            html += '<span class="node-name sub-node-name">' + name + '</span>';
         }
 
         html += '<span class="add-node"></span><span class="edit-node"></span><span class="remove-node"></span>';

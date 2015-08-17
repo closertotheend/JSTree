@@ -33,6 +33,8 @@ function NodeView(registry) {
         setAddIconClickHandler(addIcon);
         var removeIcon = DOM.getRemoveIconOfNode(node);
         setRemoveIconClickHandler(removeIcon);
+        var editIcon = DOM.getEditIconOfNode(node);
+        setEditIconClickHandler(editIcon);
         DOM.makeCollapseIconClosed(collapseIcon);
     }
 
@@ -44,17 +46,6 @@ function NodeView(registry) {
             } else if (DOM.isCollapseIconOpen(this)) {
                 closeTreeViaCollapseIcon(this)
             }
-        })
-    }
-
-    function setRemoveIconClickHandler(removeIcon) {
-        removeIcon.addEventListener('click', function (e) {
-            e.stopPropagation();
-            var node = DOMHelper.getNodeFromRemoveIcon(this);
-            var nodeId = DOM.getNodeDataId(node);
-            var nodeObject = registry.getNodeById(nodeId);
-            registry.removeNode(nodeObject);
-            node.remove();
         })
     }
 
@@ -89,7 +80,7 @@ function NodeView(registry) {
             function createNode(newFolderForm) {
                 var parentNode = DOM.getNodeOfNewFolderForm(newFolderForm);
                 var parentNodeId = DOM.getNodeDataId(parentNode);
-                var newNodeName = DOM.getNodeNameOfNewFolderForm(newFolderForm);
+                var newNodeName = DOM.getEditedNodeNameOfNodeEditForm(newFolderForm);
                 var newNodeObject = registry.createNode(newNodeName);
                 var parentNodeObject = registry.getNodeById(parentNodeId);
                 parentNodeObject.addChild(newNodeObject);
@@ -103,6 +94,57 @@ function NodeView(registry) {
                 DOM.getNewFolderFormFromCancelButton(this).remove();
             });
         }
+    }
+
+    function setRemoveIconClickHandler(removeIcon) {
+        removeIcon.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var node = DOMHelper.getNodeFromRemoveIcon(this);
+            var nodeId = DOM.getNodeDataId(node);
+            var nodeObject = registry.getNodeById(nodeId);
+            registry.removeNode(nodeObject);
+            node.remove();
+        })
+    }
+
+    function setEditIconClickHandler(editIcon) {
+        editIcon.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var node = DOMHelper.getNodeFromEditIcon(this);
+            if (DOM.nodeEditFormDoesNotExist(node)) {
+                createEditForm();
+            }
+            openTreeViaCollapseIcon(DOM.getCollapseIconOfNode(node));
+
+            function createEditForm() {
+                var editForm = DOM.createEditNodeForm();
+                var firstSubNodeOfNode = DOM.getFirstSubNodeOfNode(node);
+                node.insertBefore(editForm, firstSubNodeOfNode);
+                var saveButton = DOM.getSaveButtonOfNodeEditForm(editForm);
+                setSaveButtonClickHandler(saveButton);
+                var cancelButton = DOM.getCancelButtonOfNodeEditForm(editForm);
+                setCancelButtonClickHandler(cancelButton);
+
+                function setSaveButtonClickHandler(saveButton) {
+                    saveButton.addEventListener('click', function (e) {
+                        var editNodeForm = DOM.getNodeEditFormFromSaveButton(this);
+                        var node = DOM.getNodeOfNodeEditForm(editNodeForm);
+                        var nodeId = DOM.getNodeDataId(node);
+                        var newName = DOM.getEditedNodeNameOfNodeEditForm(editNodeForm);
+                        var nodeObject = registry.getNodeById(nodeId);
+                        nodeObject.name = newName;
+                        DOM.changeNameOfNode(node, newName);
+                        editNodeForm.remove();
+                    });
+                }
+
+                function setCancelButtonClickHandler(cancelButton) {
+                    cancelButton.addEventListener('click', function (e) {
+                        DOM.getNodeEditFormFromCancelButton(this).remove();
+                    });
+                }
+            }
+        });
     }
 
     function closeTreeViaCollapseIcon(collapseIcon) {
