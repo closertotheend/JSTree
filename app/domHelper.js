@@ -95,7 +95,7 @@ var DOMHelper = {
     },
 
     getNewNodeNameInputOfNodeEditForm: function (nodeEditForm) {
-        return nodeEditForm.getElementsByClassName('edit-current-node-name  ')[0];
+        return nodeEditForm.getElementsByClassName('edit-current-node-name')[0];
     },
 
     getEditedNodeNameOfNodeEditForm: function (nodeEditForm) {
@@ -209,22 +209,26 @@ var DOMHelper = {
         }
     },
 
-    hideChildrenOfNode: function (element) {
-        for (var i = 0; i < element.childNodes.length; i++) {
-            var childNodeElement = element.childNodes[i];
+    closeTreeViaCollapseIcon: function (collapseIcon) {
+        var node = this.getNodeFromCollapseIcon(collapseIcon);
+        for (var i = 0; i < node.childNodes.length; i++) {
+            var childNodeElement = node.childNodes[i];
             if (this.isCloseable(childNodeElement)) {
                 this.hide(childNodeElement);
             }
         }
+        this.makeCollapseIconClosed(collapseIcon);
     },
 
-    showChildrenOfNode: function (element) {
-        for (var i = 0; i < element.childNodes.length; i++) {
-            var childNodeElement = element.childNodes[i];
+    openTreeViaCollapseIcon: function (collapseIcon) {
+        var node = this.getNodeFromCollapseIcon(collapseIcon);
+        for (var i = 0; i < node.childNodes.length; i++) {
+            var childNodeElement = node.childNodes[i];
             if (this.isCloseable(childNodeElement)) {
                 this.show(childNodeElement);
             }
         }
+        this.makeCollapseIconOpen(collapseIcon);
     },
 
     isCloseable: function (childNodeElement) {

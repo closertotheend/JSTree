@@ -62,3 +62,8 @@ body {
 .insert-new-node{
     padding-left: 20px;
 }
+
+.edit-current-node{
+    padding-left: 10px;
+    display: inline;
+}

@@ -42,9 +42,9 @@ function NodeView(registry) {
         collapseIcon.addEventListener('click', function (e) {
             e.stopPropagation();
             if (DOM.isCollapseIconClosed(this)) {
-                openTreeViaCollapseIcon(this)
+                DOM.openTreeViaCollapseIcon(this)
             } else if (DOM.isCollapseIconOpen(this)) {
-                closeTreeViaCollapseIcon(this)
+                DOM.closeTreeViaCollapseIcon(this)
             }
         })
     }
@@ -56,7 +56,7 @@ function NodeView(registry) {
             if (DOM.newFolderFormDoesNotExist(node)) {
                 createNewForm();
             }
-            openTreeViaCollapseIcon(DOM.getCollapseIconOfNode(node));
+            DOM.openTreeViaCollapseIcon(DOM.getCollapseIconOfNode(node));
 
             function createNewForm() {
                 var newFolderForm = DOM.createNewFolderForm();
@@ -80,7 +80,7 @@ function NodeView(registry) {
             function createNode(newFolderForm) {
                 var parentNode = DOM.getNodeOfNewFolderForm(newFolderForm);
                 var parentNodeId = DOM.getNodeDataId(parentNode);
-                var newNodeName = DOM.getEditedNodeNameOfNodeEditForm(newFolderForm);
+                var newNodeName = DOM.getNodeNameOfNewFolderForm(newFolderForm);
                 var newNodeObject = registry.createNode(newNodeName);
                 var parentNodeObject = registry.getNodeById(parentNodeId);
                 parentNodeObject.addChild(newNodeObject);
@@ -114,7 +114,6 @@ function NodeView(registry) {
             if (DOM.nodeEditFormDoesNotExist(node)) {
                 createEditForm();
             }
-            openTreeViaCollapseIcon(DOM.getCollapseIconOfNode(node));
 
             function createEditForm() {
                 var editForm = DOM.createEditNodeForm();
@@ -145,18 +144,6 @@ function NodeView(registry) {
                 }
             }
         });
-    }
-
-    function closeTreeViaCollapseIcon(collapseIcon) {
-        var node = DOM.getNodeFromCollapseIcon(collapseIcon);
-        DOM.hideChildrenOfNode(node);
-        DOM.makeCollapseIconClosed(collapseIcon);
-    }
-
-    function openTreeViaCollapseIcon(collapseIcon) {
-        var node = DOM.getNodeFromCollapseIcon(collapseIcon);
-        DOM.showChildrenOfNode(node);
-        DOM.makeCollapseIconOpen(collapseIcon);
     }
 
 }
