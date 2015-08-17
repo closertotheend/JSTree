@@ -37,6 +37,21 @@
         assert.ok(checkHTML(parent.getHtml()));
     });
 
+    QUnit.test("Should check that node is superNode if does not have parent", function (assert) {
+        var parent = new Node('Parent', '1');
+        assert.ok(parent.isSuperNode());
+    });
+
+    QUnit.test("Should check if parentnode has childNodes", function (assert) {
+        var parent = new Node('Parent', '1');
+        var child1 = new Node('Child 1', '2');
+        parent.addChild(child1);
+        assert.ok(parent.hasChildNodes());
+        assert.notOk(child1.hasChildNodes());
+    });
+
+
+
     QUnit.module("NodeRegistry", {
         beforeEach: function () {
             this.nodeRegistry = new NodeRegistry();
@@ -56,7 +71,7 @@
         assert.equal(parent1, nodeFromRegistry);
     });
 
-    QUnit.test("Should check that nodeRegistry can delete ordinary and supernode", function (assert) {
+    QUnit.test("Should check that nodeRegistry can delete ordinary and super nodes", function (assert) {
         var parent = this.nodeRegistry.createNode('Parent');
         var child1 = this.nodeRegistry.createNode('Child1');
         var child2 = this.nodeRegistry.createNode('Child2');
@@ -97,7 +112,7 @@
         }
     });
 
-    QUnit.test("Should check that nodes created without id should get an id after regiser", function (assert) {
+    QUnit.test("Should check that nodes created without id should get an id after register", function (assert) {
         var parent1 = new Node('Parent1');
         var parent2 = new Node('Parent2');
         var child1 = new Node('Child1');

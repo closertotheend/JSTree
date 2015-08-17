@@ -5,34 +5,27 @@ function NodeRegistry() {
     var that = this;
 
     this.setNodes = function (dirtyNodes) {
-        setNodeIdsIfNotSetAndRegisterThem(dirtyNodes);
-        nodes = dirtyNodes;
+        nodes = setNodeIdsIfNotSetAndRegisterThem(dirtyNodes);
     };
 
-    this.getNodes = function () {
-        return nodes;
-    };
-
-    function registerNode(node) {
-        allNodes[node.id] = node;
-    }
-
-    function setNodeIdsIfNotSetAndRegisterThem(nodes) {
-        for (var i = 0; i < nodes.length; i++) {
-            var node = nodes[i];
-            if (!node.id) {
-                node.id = ++counter;
-                registerNode(node);
+    function setNodeIdsIfNotSetAndRegisterThem(dirtyNodes) {
+        var cleanNodes = [];
+        for (var i = 0; i < dirtyNodes.length; i++) {
+            var dirtyNode = dirtyNodes[i];
+            if (dirtyNode.doesNotHaveId()) {
+                dirtyNode.id = generateId();
+                registerNode(dirtyNode);
             }
-            if(node.hasChildNodes()){
-                setNodeIdsIfNotSetAndRegisterThem(node.childNodes)
+            cleanNodes.push(dirtyNode);
+            if (dirtyNode.hasChildNodes()) {
+                setNodeIdsIfNotSetAndRegisterThem(dirtyNode.childNodes)
             }
         }
+        return cleanNodes;
     }
 
     this.createNode = function (name) {
-        var id = ++counter;
-        var node = new Node(name, id);
+        var node = new Node(name, generateId());
         registerNode(node);
         return node;
     };
@@ -45,10 +38,6 @@ function NodeRegistry() {
             var childNodes = node.parentNode.childNodes;
             childNodes.splice(childNodes.indexOf(node), 1);
         }
-    };
-
-    this.getNodeById = function (id) {
-        return allNodes[id];
     };
 
     this.save = function () {
@@ -84,15 +73,19 @@ function NodeRegistry() {
     this.deserialize = function () {
         var info = JSON.parse(localStorage.getItem("nodeRegistryInfo"));
         var jsonNodes = JSON.parse(info.nodes);
+        var nodes = deserializeJsonNodes(jsonNodes);
+        return {counter: JSON.parse(info.counter), nodes: nodes};
+    };
 
+    function deserializeJsonNodes(jsonNodes) {
         var nodes = [];
         for (var i = 0; i < jsonNodes.length; i++) {
             var badNode = jsonNodes[i];
             var node = deserializeJsonNode(badNode);
             nodes.push(node);
         }
-        return {counter: JSON.parse(info.counter), nodes: nodes};
-    };
+        return nodes;
+    }
 
     function deserializeJsonNode(jsonNode) {
         var node = new Node(jsonNode.name, jsonNode.id);
@@ -104,6 +97,22 @@ function NodeRegistry() {
             }
         }
         return node;
+    }
+
+    this.getNodes = function () {
+        return nodes;
+    };
+
+    this.getNodeById = function (id) {
+        return allNodes[id];
+    };
+
+    function registerNode(node) {
+        allNodes[node.id] = node;
+    }
+
+    function generateId() {
+        return ++counter;
     }
 
 

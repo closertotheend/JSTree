@@ -44,5 +44,9 @@ function Node(name, id) {
 
     this.hasChildNodes = function() {
         return that.childNodes.length != 0;
+    };
+
+    this.doesNotHaveId = function() {
+        return !that.id;
     }
 }
