@@ -15,7 +15,7 @@ function Node(name, id) {
             html += '<span class="sub-node-name">' + name + '</span>';
         }
 
-        html += '<span class="add-node"></span><span class="remove-node"></span>';
+        html += '<span class="add-node"></span><span class="edit-node"></span><span class="remove-node"></span>';
         if (hasChildNodes()) {
             for (var i = 0; i < this.childNodes.length; i++) {
                 var node = this.childNodes[i];

@@ -15,20 +15,34 @@ body {
     font-weight: 800;
 }
 
-.add-node {
-    cursor: pointer;
-}
-
 .add-node:before {
-    content: " + ";
+    content: " ";
 }
 
-.remove-node {
+.add-node:after {
+    content: "Add";
     cursor: pointer;
+    text-decoration: underline;
+}
+
+.edit-node:before {
+    content: " ";
+}
+
+.edit-node:after {
+    content: "Edit";
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .remove-node:before {
-    content: " - ";
+    content: " ";
+}
+
+.remove-node:after {
+    content: "Delete";
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .node-collapse {
