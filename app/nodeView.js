@@ -4,6 +4,7 @@ function NodeView(nodeRegistry, anchorId) {
     var DOM = DOMHelper;
 
     this.render = function () {
+        registry.loadState();
         renderDOM();
         setNodesHandlers();
         DOM.hideSubNodes();
@@ -83,6 +84,7 @@ function NodeView(nodeRegistry, anchorId) {
                         var newNodeObject = registry.createNode(newNodeName);
                         var parentNodeObject = registry.getNodeById(parentNodeId);
                         parentNodeObject.addChild(newNodeObject);
+                        registry.save();
                         DOM.insertHtmlAfterNewFolderForm(newFolderForm, newNodeObject.getHtml());
                         return DOM.getFirstSubNodeOfNode(parentNode);
                     }
@@ -105,6 +107,7 @@ function NodeView(nodeRegistry, anchorId) {
             var nodeId = DOM.getNodeDataId(node);
             var nodeObject = registry.getNodeById(nodeId);
             registry.removeNode(nodeObject);
+            registry.save();
             node.remove();
         })
     }
@@ -135,6 +138,7 @@ function NodeView(nodeRegistry, anchorId) {
                         var newName = DOM.getEditedNodeNameOfNodeEditForm(editNodeForm);
                         var nodeObject = registry.getNodeById(nodeId);
                         nodeObject.name = newName;
+                        registry.save();
                         DOM.changeNameOfNode(node, newName);
                         editNodeForm.remove();
                     });

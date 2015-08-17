@@ -62,7 +62,7 @@
         var child2 = this.nodeRegistry.createNode('Child2');
         parent.addChild(child1);
         parent.addChild(child2);
-        this.nodeRegistry.nodes = [parent];
+        this.nodeRegistry.setNodes([parent]);
 
         assert.equal(parent.childNodes.length, 2);
         this.nodeRegistry.removeNode(child1);
@@ -70,9 +70,9 @@
         this.nodeRegistry.removeNode(child2);
         assert.equal(parent.childNodes.length, 0);
 
-        assert.equal(this.nodeRegistry.nodes.length, 1);
+        assert.equal(this.nodeRegistry.getNodes().length, 1);
         this.nodeRegistry.removeNode(parent);
-        assert.equal(this.nodeRegistry.nodes.length, 0);
+        assert.equal(this.nodeRegistry.getNodes().length, 0);
     });
 
     QUnit.test("Should check that nodeRegistry serializes objects correctly", function (assert) {
@@ -82,8 +82,70 @@
         var child2 = this.nodeRegistry.createNode('Child2');
         parent1.addChild(child1);
         parent1.addChild(child2);
-        this.nodeRegistry.nodes = [parent1, parent2];
-        this.nodeRegistry.save();
+        this.nodeRegistry.setNodes([parent1, parent2]);
+        var nodes = this.nodeRegistry.getNodes();
+        var serializedNodesJSONString = this.nodeRegistry.save();
+        assert.ok(isJsonString(serializedNodesJSONString));
+
+        function isJsonString(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        }
+    });
+
+    QUnit.test("Should check that nodes created without id should get an id after regiser", function (assert) {
+        var parent1 = new Node('Parent1');
+        var parent2 = new Node('Parent2');
+        var child1 = new Node('Child1');
+        var child2 = new Node('Child2');
+        parent1.addChild(child1);
+        parent1.addChild(child2);
+
+        this.nodeRegistry.setNodes([parent1, parent2]);
+
+        assert.ok(parent1.id);
+        assert.ok(parent2.id);
+        assert.ok(child1.id);
+        assert.ok(child2.id);
+
+        assert.equal(child2, this.nodeRegistry.getNodeById(child2.id));
+
+    });
+
+    QUnit.test("Should check that nodeRegistry deserializes objects correctly", function (assert) {
+        var parent1 = this.nodeRegistry.createNode('Parent1');
+        var child1 = this.nodeRegistry.createNode('Child1');
+        var child2 = this.nodeRegistry.createNode('Child2');
+        parent1.addChild(child1);
+        parent1.addChild(child2);
+        this.nodeRegistry.setNodes([parent1]);
+        var serializedNodesJSONString = this.nodeRegistry.save();
+
+        var loadState = this.nodeRegistry.deserialize(serializedNodesJSONString);
+        console.log(JSON.parse(JSON.parse(serializedNodesJSONString).nodes));
+
+        assert.ok(loadState.counter);
+
+        var parent1Deserialized = loadState.nodes[0];
+        assert.equal(parent1Deserialized.id, parent1.id);
+        assert.equal(parent1Deserialized.name, parent1.name);
+        assert.equal(parent1Deserialized.parentNode, parent1.parentNode);
+        assert.equal(parent1Deserialized.childNodes.length, 2);
+        var child1Deserialized = parent1Deserialized.childNodes[0];
+        assert.equal(child1Deserialized.id, child1.id);
+        assert.equal(child1Deserialized.name, child1.name);
+        assert.equal(child1Deserialized.parentNode, parent1Deserialized);
+        var child2Deserialized = parent1Deserialized.childNodes[1];
+        assert.equal(child2Deserialized.id, child2.id);
+        assert.equal(child1Deserialized.parentNode, parent1Deserialized);
+
+        assert.equal(this.nodeRegistry.getNodeById(parent1Deserialized.id), parent1Deserialized);
+        assert.equal(this.nodeRegistry.getNodeById(child1Deserialized.id), child1Deserialized);
+        assert.equal(this.nodeRegistry.getNodeById(child2Deserialized.id), child2Deserialized);
     });
 </script>
 
