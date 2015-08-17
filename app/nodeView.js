@@ -5,7 +5,11 @@ function NodeView(nodeRegistry, anchorId) {
     var that = this;
 
     this.render = function () {
-        registry.loadState();
+        if (registry.hasPreviousSession()) {
+            registry.loadState();
+        } else {
+            createMockNodes();
+        }
         renderDOM();
         setNodesHandlers();
         setResetButtonHandler();
@@ -157,19 +161,26 @@ function NodeView(nodeRegistry, anchorId) {
 
     function setResetButtonHandler() {
         DOM.getResetButton().addEventListener('click', function (e) {
-            var parent1 = new Node("C:/");
-            var parent2 = new Node("D:/");
-            var child11 = new Node("Java");
-            var child12 = new Node("NodeJS");
-            var child1 = new Node("Program Files");
-            child1.addChild(child11);
-            child1.addChild(child12);
-            parent1.addChild(child1);
-            parent1.addChild(new Node("Games"));
-            registry.setNodes([parent1, parent2]);
-            registry.save();
-            that.render();
+            createMockNodes();
         });
+    }
+
+    function createMockNodes() {
+        var parent1 = new Node("C:/");
+        var parent2 = new Node("D:/");
+        var nodeJS = new Node("NodeJS");
+        var child1 = new Node("Program Files");
+        child1.addChild(new Node("Java"));
+        child1.addChild(nodeJS);
+        nodeJS.addChild(new Node('Grunt'));
+        nodeJS.addChild(new Node('Gulp'));
+        parent1.addChild(child1);
+        var games = new Node("Games");
+        parent1.addChild(games);
+        games.addChild(new Node("Solitare"));
+        registry.setNodes([parent1, parent2]);
+        registry.save();
+        that.render();
     }
 
 }

@@ -63,6 +63,10 @@ function NodeRegistry() {
         return JSON.stringify({nodes: nodes, counter: that.counter});
     };
 
+    this.hasPreviousSession = function () {
+        return localStorage.getItem("nodeRegistryInfo");
+    };
+
     this.loadState = function () {
         var deserializedInfo = this.deserialize(localStorage.getItem("nodeRegistryInfo"));
         this.setNodes(deserializedInfo.nodes);
