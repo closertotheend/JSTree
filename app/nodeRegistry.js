@@ -41,12 +41,12 @@ function NodeRegistry() {
     };
 
     this.save = function () {
-        var data = serialize();
+        var data = this.serialize();
         localStorage.setItem("nodeRegistryInfo", data);
         return data;
     };
 
-    function serialize() {
+    this.serialize = function() {
         var cache = [];
         var nodes = JSON.stringify(that.getNodes(), function (key, value) {
             if (value !== null) {
@@ -61,17 +61,17 @@ function NodeRegistry() {
         });
         cache = null; // Enable garbage collection
         return JSON.stringify({nodes: nodes, counter: counter});
-    }
+    };
 
     this.loadState = function () {
-        var deserializedInfo = this.deserialize();
+        var deserializedInfo = this.deserialize(localStorage.getItem("nodeRegistryInfo"));
         this.setNodes(deserializedInfo.nodes);
         that.counter = parseInt(deserializedInfo.counter);
         return deserializedInfo;
     };
 
-    this.deserialize = function () {
-        var info = JSON.parse(localStorage.getItem("nodeRegistryInfo"));
+    this.deserialize = function (json) {
+        var info = JSON.parse(json);
         var jsonNodes = JSON.parse(info.nodes);
         var nodes = deserializeJsonNodes(jsonNodes);
         return {counter: JSON.parse(info.counter), nodes: nodes};
@@ -89,8 +89,8 @@ function NodeRegistry() {
 
     function deserializeJsonNode(jsonNode) {
         var node = new Node(jsonNode.name, jsonNode.id);
-        allNodes[node.id] = node;
-        if (jsonNode.childNodes.length != 0) {
+        registerNode(node);
+        if (jsonNode.childNodes && jsonNode.childNodes.length != 0) {
             for (var i = 0; i < jsonNode.childNodes.length; i++) {
                 var badNodeChild = jsonNode.childNodes[i];
                 node.addChild(deserializeJsonNode(badNodeChild));

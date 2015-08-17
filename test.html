@@ -98,8 +98,7 @@
         parent1.addChild(child1);
         parent1.addChild(child2);
         this.nodeRegistry.setNodes([parent1, parent2]);
-        var nodes = this.nodeRegistry.getNodes();
-        var serializedNodesJSONString = this.nodeRegistry.save();
+        var serializedNodesJSONString = this.nodeRegistry.serialize();
         assert.ok(isJsonString(serializedNodesJSONString));
 
         function isJsonString(str) {
@@ -138,12 +137,9 @@
         parent1.addChild(child1);
         parent1.addChild(child2);
         this.nodeRegistry.setNodes([parent1]);
-        var serializedNodesJSONString = this.nodeRegistry.save();
+        var serializedNodesJSONString = this.nodeRegistry.serialize();
 
         var loadState = this.nodeRegistry.deserialize(serializedNodesJSONString);
-        console.log(JSON.parse(JSON.parse(serializedNodesJSONString).nodes));
-
-        assert.ok(loadState.counter);
 
         var parent1Deserialized = loadState.nodes[0];
         assert.equal(parent1Deserialized.id, parent1.id);
@@ -161,6 +157,15 @@
         assert.equal(this.nodeRegistry.getNodeById(parent1Deserialized.id), parent1Deserialized);
         assert.equal(this.nodeRegistry.getNodeById(child1Deserialized.id), child1Deserialized);
         assert.equal(this.nodeRegistry.getNodeById(child2Deserialized.id), child2Deserialized);
+    });
+
+    QUnit.test("Should check counter after deserialization", function (assert) {
+        var parent1 = this.nodeRegistry.createNode('Parent1');
+        this.nodeRegistry.setNodes([parent1]);
+        var serializedJson = this.nodeRegistry.serialize();
+        var loadState = this.nodeRegistry.deserialize(serializedJson);
+
+        assert.equal(parent1.id, loadState.counter);
     });
 </script>
 
