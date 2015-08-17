@@ -13,12 +13,16 @@ function NodeRegistry() {
         return nodes;
     };
 
+    function registerNode(node) {
+        allNodes[node.id] = node;
+    }
+
     function setNodeIdsIfNotSetAndRegisterThem(nodes) {
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
             if (!node.id) {
                 node.id = ++counter;
-                allNodes[node.id] = node;
+                registerNode(node);
             }
             if(node.hasChildNodes()){
                 setNodeIdsIfNotSetAndRegisterThem(node.childNodes)
@@ -29,7 +33,7 @@ function NodeRegistry() {
     this.createNode = function (name) {
         var id = ++counter;
         var node = new Node(name, id);
-        allNodes[id] = node;
+        registerNode(node);
         return node;
     };
 
@@ -71,33 +75,32 @@ function NodeRegistry() {
     }
 
     this.loadState = function () {
-        var deserialized = this.deserialize();
-        var nodes = deserialized.nodes;
-        this.setNodes(nodes);
-        that.counter = parseInt(deserialized.counter);
-        return deserialized;
+        var deserializedInfo = this.deserialize();
+        this.setNodes(deserializedInfo.nodes);
+        that.counter = parseInt(deserializedInfo.counter);
+        return deserializedInfo;
     };
 
     this.deserialize = function () {
         var info = JSON.parse(localStorage.getItem("nodeRegistryInfo"));
-        var badNodes = JSON.parse(info.nodes);
+        var jsonNodes = JSON.parse(info.nodes);
 
         var nodes = [];
-        for (var i = 0; i < badNodes.length; i++) {
-            var badNode = badNodes[i];
-            var node = deserializeBadNode(badNode);
+        for (var i = 0; i < jsonNodes.length; i++) {
+            var badNode = jsonNodes[i];
+            var node = deserializeJsonNode(badNode);
             nodes.push(node);
         }
         return {counter: JSON.parse(info.counter), nodes: nodes};
     };
 
-    function deserializeBadNode(badNode) {
-        var node = new Node(badNode.name, badNode.id);
+    function deserializeJsonNode(jsonNode) {
+        var node = new Node(jsonNode.name, jsonNode.id);
         allNodes[node.id] = node;
-        if (badNode.childNodes.length != 0) {
-            for (var i = 0; i < badNode.childNodes.length; i++) {
-                var badNodeChild = badNode.childNodes[i];
-                node.addChild(deserializeBadNode(badNodeChild));
+        if (jsonNode.childNodes.length != 0) {
+            for (var i = 0; i < jsonNode.childNodes.length; i++) {
+                var badNodeChild = jsonNode.childNodes[i];
+                node.addChild(deserializeJsonNode(badNodeChild));
             }
         }
         return node;

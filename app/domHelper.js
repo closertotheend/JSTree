@@ -216,6 +216,15 @@ var DOMHelper = {
         newFolderDiv.appendChild(nodeNameInputCancel);
         return newFolderDiv;
     },
+    // RESET BUTTON
+    createResetButton: function () {
+        return '<button id="reset">Reset</button>';
+    },
+
+    getResetButton: function () {
+        return document.getElementById('reset');
+    },
+
     // ANIMATIONS AND HIGH LEVEL
     hideSubNodes: function () {
         var subNodes = this.getAllSubNodes();

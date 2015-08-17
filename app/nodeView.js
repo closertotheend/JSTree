@@ -1,12 +1,14 @@
 function NodeView(nodeRegistry, anchorId) {
     var anchor = anchorId ? document.getElementById(anchorId) : DOMHelper.getDefaultAnchor();
-    var registry = nodeRegistry;
+    var registry = nodeRegistry? nodeRegistry : new NodeRegistry();
     var DOM = DOMHelper;
+    var that = this;
 
     this.render = function () {
         registry.loadState();
         renderDOM();
         setNodesHandlers();
+        setResetButtonHandler();
         DOM.hideSubNodes();
     };
 
@@ -17,7 +19,7 @@ function NodeView(nodeRegistry, anchorId) {
             var node = nodes[i];
             html += node.getHtml();
         }
-        anchor.innerHTML = html;
+        anchor.innerHTML = DOM.createResetButton() + html;
     }
 
     function setNodesHandlers() {
@@ -150,6 +152,23 @@ function NodeView(nodeRegistry, anchorId) {
                     });
                 }
             }
+        });
+    }
+
+    function setResetButtonHandler() {
+        DOM.getResetButton().addEventListener('click', function (e) {
+            var parent1 = new Node("C:/");
+            var parent2 = new Node("D:/");
+            var child11 = new Node("Java");
+            var child12 = new Node("NodeJS");
+            var child1 = new Node("Program Files");
+            child1.addChild(child11);
+            child1.addChild(child12);
+            parent1.addChild(child1);
+            parent1.addChild(new Node("Games"));
+            registry.setNodes([parent1, parent2]);
+            registry.save();
+            that.render();
         });
     }
 
