@@ -1,5 +1,5 @@
 function NodeRegistry() {
-    var counter = 0;
+    this.counter = 0;
     var allNodes = {};
     var nodes = [];
     var that = this;
@@ -60,7 +60,7 @@ function NodeRegistry() {
             return value;
         });
         cache = null; // Enable garbage collection
-        return JSON.stringify({nodes: nodes, counter: counter});
+        return JSON.stringify({nodes: nodes, counter: that.counter});
     };
 
     this.loadState = function () {
@@ -112,7 +112,7 @@ function NodeRegistry() {
     }
 
     function generateId() {
-        return ++counter;
+        return ++that.counter;
     }
 
 

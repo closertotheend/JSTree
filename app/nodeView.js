@@ -1,6 +1,6 @@
 function NodeView(nodeRegistry, anchorId) {
     var anchor = anchorId ? document.getElementById(anchorId) : DOMHelper.getDefaultAnchor();
-    var registry = nodeRegistry? nodeRegistry : new NodeRegistry();
+    var registry = nodeRegistry ? nodeRegistry : new NodeRegistry();
     var DOM = DOMHelper;
     var that = this;
 
