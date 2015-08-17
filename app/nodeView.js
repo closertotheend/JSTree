@@ -1,6 +1,6 @@
-function NodeView(registry) {
-    var anchor = DOMHelper.getAnchor();
-    var registry = registry;
+function NodeView(nodeRegistry, anchorId) {
+    var anchor = anchorId ? document.getElementById(anchorId) : DOMHelper.getDefaultAnchor();
+    var registry = nodeRegistry;
     var DOM = DOMHelper;
 
     this.render = function () {
@@ -10,7 +10,7 @@ function NodeView(registry) {
     };
 
     function renderDOM() {
-        var nodes = registry.nodes;
+        var nodes = registry.getNodes();
         var html = '';
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];

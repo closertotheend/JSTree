@@ -16,7 +16,7 @@ function Node(name, id) {
         }
 
         html += '<span class="add-node"></span><span class="edit-node"></span><span class="remove-node"></span>';
-        if (hasChildNodes()) {
+        if (this.hasChildNodes()) {
             for (var i = 0; i < this.childNodes.length; i++) {
                 var node = this.childNodes[i];
                 html += node.getHtml();
@@ -42,7 +42,7 @@ function Node(name, id) {
         return !that.parentNode;
     };
 
-    function hasChildNodes() {
+    this.hasChildNodes = function() {
         return that.childNodes.length != 0;
     }
 }

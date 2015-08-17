@@ -74,6 +74,17 @@
         this.nodeRegistry.removeNode(parent);
         assert.equal(this.nodeRegistry.nodes.length, 0);
     });
+
+    QUnit.test("Should check that nodeRegistry serializes objects correctly", function (assert) {
+        var parent1 = this.nodeRegistry.createNode('Parent1');
+        var parent2 = this.nodeRegistry.createNode('Parent2');
+        var child1 = this.nodeRegistry.createNode('Child1');
+        var child2 = this.nodeRegistry.createNode('Child2');
+        parent1.addChild(child1);
+        parent1.addChild(child2);
+        this.nodeRegistry.nodes = [parent1, parent2];
+        this.nodeRegistry.save();
+    });
 </script>
 
 </body>

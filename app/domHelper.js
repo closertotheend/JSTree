@@ -1,6 +1,6 @@
 var DOMHelper = {
     //COMMON
-    getAnchor: function () {
+    getDefaultAnchor: function () {
         return document.getElementById('tree');
     },
 
