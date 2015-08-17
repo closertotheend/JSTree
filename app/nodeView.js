@@ -54,11 +54,12 @@ function NodeView(registry) {
             e.stopPropagation();
             var node = DOM.getNodeFromAddIcon(this);
             if (DOM.newFolderFormDoesNotExist(node)) {
-                createNewForm();
+                createNewForm(node);
             }
             DOM.openTreeViaCollapseIcon(DOM.getCollapseIconOfNode(node));
 
-            function createNewForm() {
+            function createNewForm(node) {
+                DOM.removeEditOrNewNodeForm(node);
                 var newFolderForm = DOM.createNewFolderForm();
                 var firstSubNodeOfNode = DOM.getFirstSubNodeOfNode(node);
                 node.insertBefore(newFolderForm, firstSubNodeOfNode);
@@ -66,34 +67,35 @@ function NodeView(registry) {
                 setCancelButtonClickHandler(cancelButton);
                 var saveButton = DOM.getSaveButtonOfNewFolderForm(newFolderForm);
                 setSaveButtonClickHandler(saveButton);
+
+                function setSaveButtonClickHandler(saveButton) {
+                    saveButton.addEventListener('click', function (e) {
+                        var newFolderForm = DOM.getNewFolderFormFromCancelButton(this);
+                        var newNode = createNode(newFolderForm);
+                        setNodeHandlers(newNode);
+                        newFolderForm.remove();
+                    });
+
+                    function createNode(newFolderForm) {
+                        var parentNode = DOM.getNodeOfNewFolderForm(newFolderForm);
+                        var parentNodeId = DOM.getNodeDataId(parentNode);
+                        var newNodeName = DOM.getNodeNameOfNewFolderForm(newFolderForm);
+                        var newNodeObject = registry.createNode(newNodeName);
+                        var parentNodeObject = registry.getNodeById(parentNodeId);
+                        parentNodeObject.addChild(newNodeObject);
+                        DOM.insertHtmlAfterNewFolderForm(newFolderForm, newNodeObject.getHtml());
+                        return DOM.getFirstSubNodeOfNode(parentNode);
+                    }
+                }
+
+                function setCancelButtonClickHandler(cancelButton) {
+                    cancelButton.addEventListener('click', function (e) {
+                        DOM.getNewFolderFormFromCancelButton(this).remove();
+                    });
+                }
             }
         });
 
-        function setSaveButtonClickHandler(saveButton) {
-            saveButton.addEventListener('click', function (e) {
-                var newFolderForm = DOM.getNewFolderFormFromCancelButton(this);
-                var newNode = createNode(newFolderForm);
-                setNodeHandlers(newNode);
-                newFolderForm.remove();
-            });
-
-            function createNode(newFolderForm) {
-                var parentNode = DOM.getNodeOfNewFolderForm(newFolderForm);
-                var parentNodeId = DOM.getNodeDataId(parentNode);
-                var newNodeName = DOM.getNodeNameOfNewFolderForm(newFolderForm);
-                var newNodeObject = registry.createNode(newNodeName);
-                var parentNodeObject = registry.getNodeById(parentNodeId);
-                parentNodeObject.addChild(newNodeObject);
-                DOM.insertHtmlAfterNewFolderForm(newFolderForm, newNodeObject.getHtml());
-                return DOM.getFirstSubNodeOfNode(parentNode);
-            }
-        }
-
-        function setCancelButtonClickHandler(cancelButton) {
-            cancelButton.addEventListener('click', function (e) {
-                DOM.getNewFolderFormFromCancelButton(this).remove();
-            });
-        }
     }
 
     function setRemoveIconClickHandler(removeIcon) {
@@ -112,10 +114,11 @@ function NodeView(registry) {
             e.stopPropagation();
             var node = DOMHelper.getNodeFromEditIcon(this);
             if (DOM.nodeEditFormDoesNotExist(node)) {
-                createEditForm();
+                createEditForm(node);
             }
 
-            function createEditForm() {
+            function createEditForm(node) {
+                DOM.removeEditOrNewNodeForm(node);
                 var editForm = DOM.createEditNodeForm();
                 var firstSubNodeOfNode = DOM.getFirstSubNodeOfNode(node);
                 node.insertBefore(editForm, firstSubNodeOfNode);

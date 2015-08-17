@@ -40,6 +40,21 @@ var DOMHelper = {
     changeNameOfNode: function (node, newName) {
         return node.getElementsByClassName('node-name')[0].innerHTML = newName;
     },
+
+    getParentNodeOfNode: function (node) {
+        return node.parent.getElementsByClassName('node')[0]
+    },
+
+    removeEditOrNewNodeForm: function (node) {
+        var nodeEditCurrentForm = node.getElementsByClassName('edit-current-node')[0];
+        if (nodeEditCurrentForm) {
+            nodeEditCurrentForm.remove();
+        }
+        var newNodeForm = node.getElementsByClassName('insert-new-node')[0];
+        if (newNodeForm) {
+            newNodeForm.remove();
+        }
+    },
     //ICONS
     getNodeFromAddIcon: function (addIcon) {
         return addIcon.parentNode;
