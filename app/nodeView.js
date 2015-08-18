@@ -36,6 +36,7 @@ function NodeView(nodeRegistry, anchorId) {
     function setResetButtonHandler() {
         DOM.getResetButton().addEventListener('click', function (e) {
             createMockNodes();
+            that.render();
         });
     }
 
@@ -54,7 +55,6 @@ function NodeView(nodeRegistry, anchorId) {
         games.addChild(new Node("Solitare"));
         registry.setNodes([parent1, parent2]);
         registry.save();
-        that.render();
     }
 }
 
