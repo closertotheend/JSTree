@@ -8,7 +8,7 @@ function NodeView(nodeRegistry, anchorId) {
         if (registry.hasPreviousSession()) {
             registry.loadState();
         } else {
-            createMockNodes();
+            registry.loadMockState();
         }
         renderDOM();
         setNodesHandlers();
@@ -35,27 +35,11 @@ function NodeView(nodeRegistry, anchorId) {
 
     function setResetButtonHandler() {
         DOM.getResetButton().addEventListener('click', function (e) {
-            createMockNodes();
+            registry.loadMockState();
             that.render();
         });
     }
 
-    function createMockNodes() {
-        var parent1 = new Node("C:/");
-        var parent2 = new Node("D:/");
-        var nodeJS = new Node("NodeJS");
-        var child1 = new Node("Program Files");
-        child1.addChild(new Node("Java"));
-        child1.addChild(nodeJS);
-        nodeJS.addChild(new Node('Grunt'));
-        nodeJS.addChild(new Node('Gulp'));
-        parent1.addChild(child1);
-        var games = new Node("Games");
-        parent1.addChild(games);
-        games.addChild(new Node("Solitare"));
-        registry.setNodes([parent1, parent2]);
-        registry.save();
-    }
 }
 
 

@@ -73,6 +73,23 @@ function NodeRegistry() {
         allNodes[node.id] = node;
     };
 
+    this.loadMockState = function() {
+        var parent1 = new Node("C:/");
+        var parent2 = new Node("D:/");
+        var nodeJS = new Node("NodeJS");
+        var child1 = new Node("Program Files");
+        child1.addChild(new Node("Java"));
+        child1.addChild(nodeJS);
+        nodeJS.addChild(new Node('Grunt'));
+        nodeJS.addChild(new Node('Gulp'));
+        parent1.addChild(child1);
+        var games = new Node("Games");
+        parent1.addChild(games);
+        games.addChild(new Node("Solitare"));
+        this.setNodes([parent1, parent2]);
+        this.save();
+    };
+
     function generateId() {
         return ++that.counter;
     }
