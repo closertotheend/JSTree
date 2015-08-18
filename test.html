@@ -11,7 +11,9 @@
 <div id="tree"></div>
 <script src="lib/qunit/qunit-1.18.0.js"></script>
 <script src="app/node.js"></script>
-<script src="app/nodeRegistry.js"></script>
+<script src="app/nodeRegistry/nodeRegistry.js"></script>
+<script src="app/nodeRegistry/deserializer.js"></script>
+<script src="app/nodeRegistry/serializer.js"></script>
 <script>
     var checkHTML = function (html) {
         var doc = document.createElement('div');
@@ -90,6 +92,14 @@
         assert.equal(this.nodeRegistry.getNodes().length, 0);
     });
 
+    QUnit.module("Serilizer and deserializer", {
+        beforeEach: function () {
+            this.nodeRegistry = new NodeRegistry();
+            this.serializer = new Serializer(this.nodeRegistry);
+            this.deserilizer = new Deserializer(this.nodeRegistry);
+        }
+    });
+
     QUnit.test("Should check that nodeRegistry serializes objects correctly", function (assert) {
         var parent1 = this.nodeRegistry.createNode('Parent1');
         var parent2 = this.nodeRegistry.createNode('Parent2');
@@ -98,7 +108,7 @@
         parent1.addChild(child1);
         parent1.addChild(child2);
         this.nodeRegistry.setNodes([parent1, parent2]);
-        var serializedNodesJSONString = this.nodeRegistry.serialize();
+        var serializedNodesJSONString = this.serializer.serialize(this.nodeRegistry);
         assert.ok(isJsonString(serializedNodesJSONString));
 
         function isJsonString(str) {
@@ -137,9 +147,9 @@
         parent1.addChild(child1);
         parent1.addChild(child2);
         this.nodeRegistry.setNodes([parent1]);
-        var serializedNodesJSONString = this.nodeRegistry.serialize();
+        var serializedNodesJSONString = this.serializer.serialize(this.nodeRegistry);
 
-        var loadState = this.nodeRegistry.deserialize(serializedNodesJSONString);
+        var loadState = this.deserilizer.deserialize(serializedNodesJSONString);
 
         var parent1Deserialized = loadState.nodes[0];
         assert.equal(parent1Deserialized.id, parent1.id);
@@ -162,8 +172,8 @@
     QUnit.test("Should check counter after deserialization", function (assert) {
         var parent1 = this.nodeRegistry.createNode('Parent1');
         this.nodeRegistry.setNodes([parent1]);
-        var serializedJson = this.nodeRegistry.serialize();
-        var loadState = this.nodeRegistry.deserialize(serializedJson);
+        var serializedJson = this.serializer.serialize(this.nodeRegistry);
+        var loadState = this.deserilizer.deserialize(serializedJson);
 
         assert.equal(parent1.id, loadState.counter);
     });
