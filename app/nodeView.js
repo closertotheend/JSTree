@@ -47,12 +47,8 @@ function NodeView(nodeRegistry, anchorId) {
 
     function setCollapseIconClickHandler(collapseIcon) {
         collapseIcon.addEventListener('click', function (e) {
+            DOM.toggleTreeViaCollapseIcon(this);
             e.stopPropagation();
-            if (DOM.isCollapseIconClosed(this)) {
-                DOM.openTreeViaCollapseIcon(this)
-            } else if (DOM.isCollapseIconOpen(this)) {
-                DOM.closeTreeViaCollapseIcon(this)
-            }
         })
     }
 

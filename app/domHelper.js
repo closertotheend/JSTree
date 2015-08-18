@@ -233,6 +233,14 @@ var DOMHelper = {
         }
     },
 
+    toggleTreeViaCollapseIcon: function (collapseIcon) {
+        if (this.isCollapseIconClosed(collapseIcon)) {
+            this.openTreeViaCollapseIcon(collapseIcon)
+        } else if (this.isCollapseIconOpen(collapseIcon)) {
+            this.closeTreeViaCollapseIcon(collapseIcon)
+        }
+    },
+
     closeTreeViaCollapseIcon: function (collapseIcon) {
         var node = this.getNodeFromCollapseIcon(collapseIcon);
         for (var i = 0; i < node.childNodes.length; i++) {
