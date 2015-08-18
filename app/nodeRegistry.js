@@ -3,6 +3,7 @@ function NodeRegistry() {
     var allNodes = {};
     var nodes = [];
     var that = this;
+    var LOCAL_STORAGE_KEY = "nodeRegistryInfo";
 
     this.setNodes = function (dirtyNodes) {
         nodes = setNodeIdsIfNotSetAndRegisterThem(dirtyNodes);
@@ -42,7 +43,7 @@ function NodeRegistry() {
 
     this.save = function () {
         var data = this.serialize();
-        localStorage.setItem("nodeRegistryInfo", data);
+        localStorage.setItem(LOCAL_STORAGE_KEY, data);
         return data;
     };
 
@@ -64,11 +65,11 @@ function NodeRegistry() {
     };
 
     this.hasPreviousSession = function () {
-        return localStorage.getItem("nodeRegistryInfo");
+        return localStorage.getItem(LOCAL_STORAGE_KEY);
     };
 
     this.loadState = function () {
-        var deserializedInfo = this.deserialize(localStorage.getItem("nodeRegistryInfo"));
+        var deserializedInfo = this.deserialize(localStorage.getItem(LOCAL_STORAGE_KEY));
         this.setNodes(deserializedInfo.nodes);
         that.counter = parseInt(deserializedInfo.counter);
         return deserializedInfo;
