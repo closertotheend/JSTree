@@ -13,6 +13,15 @@ var DOMHelper = {
     },
 
     //NODE
+
+    getIconsOfNode: function (node) {
+        var collapseIcon = this.getCollapseIconOfNode(node);
+        var addIcon = this.getAddIconOfNode(node);
+        var removeIcon = this.getRemoveIconOfNode(node);
+        var editIcon = this.getEditIconOfNode(node);
+        return {collapseIcon: collapseIcon, addIcon: addIcon, removeIcon: removeIcon, editIcon: editIcon};
+    },
+
     getCollapseIconOfNode: function (node) {
         return node.getElementsByClassName('collapse-indicator')[0];
     },
