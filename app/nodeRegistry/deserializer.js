@@ -21,7 +21,7 @@ function Deserializer(registry) {
     }
 
     function deserializeJsonNode(jsonNode) {
-        var node = new Node(jsonNode.name, jsonNode.id);
+        var node = new Node({name:jsonNode.name, id: jsonNode.id});
         that.registry.registerNode(node);
         if (jsonNode.childNodes && jsonNode.childNodes.length != 0) {
             for (var i = 0; i < jsonNode.childNodes.length; i++) {

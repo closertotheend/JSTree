@@ -4,7 +4,6 @@ var Node  = Backbone.Model.extend({
         childNodes: []
     },
 
-
     getHtml: function () {
         var html = '<div data-node-id="' + this.get('id') + '" class="node ';
         html += this.isSuperNode() ? 'super-node' : 'sub-node';
@@ -31,7 +30,7 @@ var Node  = Backbone.Model.extend({
 
     addChild: function (child) {
         child.set('parentNode', this);
-        var childNodes = this.get('childNodes');
+        var childNodes = this.getChildNodes();
         this.set('childNodes', childNodes.concat(child));
     },
 
@@ -40,10 +39,26 @@ var Node  = Backbone.Model.extend({
     },
 
     hasChildNodes: function() {
-        return this.get('childNodes').length != 0;
+        return this.getChildNodes().length != 0;
     },
 
     doesNotHaveId: function() {
-        return !this.get('id');
+        return !this.getId();
+    },
+
+    getChildNodes: function() {
+        return this.get('childNodes');
+    },
+
+    getParentNode: function() {
+        return this.get('parentNode');
+    },
+
+    getId: function () {
+        return this.get('id');
+    },
+
+    getName: function () {
+        return this.get('name');
     }
 });

@@ -85,11 +85,11 @@
         parent.addChild(child2);
         this.nodeRegistry.setNodes([parent]);
 
-        assert.equal(parent.childNodes.length, 2);
+        assert.equal(parent.getChildNodes().length, 2);
         this.nodeRegistry.removeNode(child1);
-        assert.equal(parent.childNodes.length, 1);
+        assert.equal(parent.getChildNodes().length, 1);
         this.nodeRegistry.removeNode(child2);
-        assert.equal(parent.childNodes.length, 0);
+        assert.equal(parent.getChildNodes().length, 0);
 
         assert.equal(this.nodeRegistry.getNodes().length, 1);
         this.nodeRegistry.removeNode(parent);
@@ -156,17 +156,17 @@
         var loadState = this.deserilizer.deserialize(serializedNodesJSONString);
 
         var parent1Deserialized = loadState.nodes[0];
-        assert.equal(parent1Deserialized.id, parent1.id);
-        assert.equal(parent1Deserialized.name, parent1.name);
-        assert.equal(parent1Deserialized.parentNode, parent1.parentNode);
-        assert.equal(parent1Deserialized.childNodes.length, 2);
-        var child1Deserialized = parent1Deserialized.childNodes[0];
-        assert.equal(child1Deserialized.id, child1.id);
-        assert.equal(child1Deserialized.name, child1.name);
-        assert.equal(child1Deserialized.parentNode, parent1Deserialized);
-        var child2Deserialized = parent1Deserialized.childNodes[1];
-        assert.equal(child2Deserialized.id, child2.id);
-        assert.equal(child1Deserialized.parentNode, parent1Deserialized);
+        assert.equal(parent1Deserialized.getId(), parent1.getId());
+        assert.equal(parent1Deserialized.getName(), parent1.getName());
+        assert.equal(parent1Deserialized.getParentNode(), parent1.getParentNode());
+        assert.equal(parent1Deserialized.getChildNodes().length, 2);
+        var child1Deserialized = parent1Deserialized.getChildNodes()[0];
+        assert.equal(child1Deserialized.getId(), child1.getId());
+        assert.equal(child1Deserialized.getName(), child1.getName());
+        assert.equal(child1Deserialized.getParentNode(), parent1Deserialized);
+        var child2Deserialized = parent1Deserialized.getChildNodes()[1];
+        assert.equal(child2Deserialized.getId(), child2.getId());
+        assert.equal(child1Deserialized.getParentNode(), parent1Deserialized);
 
         assert.equal(this.nodeRegistry.getNodeById(parent1Deserialized.id), parent1Deserialized);
         assert.equal(this.nodeRegistry.getNodeById(child1Deserialized.id), child1Deserialized);

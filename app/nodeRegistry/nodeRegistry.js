@@ -21,7 +21,7 @@ function NodeRegistry() {
                 }
                 cleanNodes.push(dirtyNode);
                 if (dirtyNode.hasChildNodes()) {
-                    setNodeIdsIfNotSetAndRegisterThem(dirtyNode.childNodes)
+                    setNodeIdsIfNotSetAndRegisterThem(dirtyNode.getChildNodes())
                 }
             }
             return cleanNodes;
@@ -29,7 +29,7 @@ function NodeRegistry() {
     };
 
     this.createNode = function (name) {
-        var node = new Node(name, generateId());
+        var node = new Node({name: name, id: generateId()});
         this.registerNode(node);
         return node;
     };
@@ -39,7 +39,7 @@ function NodeRegistry() {
             var nodes = this.getNodes();
             nodes.splice(nodes.indexOf(node), 1);
         } else {
-            var childNodes = node.parentNode.childNodes;
+            var childNodes = node.getParentNode().getChildNodes();
             childNodes.splice(childNodes.indexOf(node), 1);
         }
     };
