@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <title>QUnit Example</title>
     <link rel="stylesheet" href="lib/qunit/qunit-1.18.0.css">
+    <script src="lib/jquery-1.11.3.min.js"></script>
+    <script src="lib/underscore-min.js"></script>
+    <script src="lib/backbone-min.js"></script>
 </head>
 <body>
 <div id="qunit"></div>
@@ -24,29 +27,30 @@
 <script>
     QUnit.module("Node");
     QUnit.test("Should check that adding child to node will add parent to child", function (assert) {
-        var parent = new Node('Parent', '1');
-        var child = new Node('Child', '2');
+        var parent = new Node({name: 'Parent', id: '1'});
+        var child = new Node({name: 'Child', id: '2'});
         parent.addChild(child);
-        assert.equal(child.parentNode, parent);
+        assert.equal(child.get('parentNode').get('id'), parent.get('id'));
+        assert.equal(child.get('parentNode').get('name'), parent.get('name'));
     });
 
     QUnit.test("Should check that node should not produce malformed html", function (assert) {
-        var parent = new Node('Parent', '1');
-        var child1 = new Node('Child 1', '2');
-        var child2 = new Node('Child 2', '3');
+        var child1 = new Node({name:'Child 1', id:'2'});
+        var child2 = new Node({name: 'Child 2', id:'3'});
+        var parent = new Node({name:'Parent', id:'1'});
         parent.addChild(child1);
         parent.addChild(child2);
         assert.ok(checkHTML(parent.getHtml()));
     });
 
     QUnit.test("Should check that node is superNode if does not have parent", function (assert) {
-        var parent = new Node('Parent', '1');
+        var parent = new Node({name: 'Parent', id: '1'});
         assert.ok(parent.isSuperNode());
     });
 
     QUnit.test("Should check if parentnode has childNodes", function (assert) {
-        var parent = new Node('Parent', '1');
-        var child1 = new Node('Child 1', '2');
+        var parent = new Node({name:'Parent', id: '1'});
+        var child1 = new Node({name: 'Child 1', id: '2'});
         parent.addChild(child1);
         assert.ok(parent.hasChildNodes());
         assert.notOk(child1.hasChildNodes());

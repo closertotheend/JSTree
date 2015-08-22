@@ -1,13 +1,14 @@
-function Node(name, id) {
-    this.name = name;
-    this.parentNode = null;
-    this.id = id;
-    this.childNodes = [];
+var Node  = Backbone.Model.extend({
+    defaults: {
+        parentNode: null,
+        childNodes: []
+    },
 
-    var that = this;
 
-    this.getHtml = function () {
-        var html = startingDiv();
+    getHtml: function () {
+        var html = '<div data-node-id="' + this.get('id') + '" class="node ';
+        html += this.isSuperNode() ? 'super-node' : 'sub-node';
+        html += '">';
         html += '<span class="collapse-indicator"></span>';
         if (this.isSuperNode()) {
             html += '<span class="node-name super-node-name">' + name + '</span>';
@@ -17,36 +18,32 @@ function Node(name, id) {
 
         html += '<span class="add-node"></span><span class="edit-node"></span><span class="remove-node"></span>';
         if (this.hasChildNodes()) {
-            for (var i = 0; i < this.childNodes.length; i++) {
-                var node = this.childNodes[i];
+            var childNodes = this.get('childNodes');
+            for (var i = 0; i < childNodes.length; i++) {
+                var node = childNodes[i];
                 html += node.getHtml();
             }
         }
         html += '</div>';
         return html;
 
-        function startingDiv() {
-            var html = '<div data-node-id="' + that.id + '" class="node ';
-            html += that.isSuperNode() ? 'super-node' : 'sub-node';
-            html += '">';
-            return html;
-        }
-    };
+    },
 
-    this.addChild = function (child) {
-        child.parentNode = that;
-        this.childNodes.push(child);
-    };
+    addChild: function (child) {
+        child.set('parentNode', this);
+        var childNodes = this.get('childNodes');
+        this.set('childNodes', childNodes.concat(child));
+    },
 
-    this.isSuperNode = function() {
-        return !that.parentNode;
-    };
+    isSuperNode: function() {
+        return !this.get('parentNode');
+    },
 
-    this.hasChildNodes = function() {
-        return that.childNodes.length != 0;
-    };
+    hasChildNodes: function() {
+        return this.get('childNodes').length != 0;
+    },
 
-    this.doesNotHaveId = function() {
-        return !that.id;
+    doesNotHaveId: function() {
+        return !this.get('id');
     }
-}
+});
