@@ -4,12 +4,15 @@ var NodeView = Backbone.View.extend({
     registry: new NodeRegistry(),
     DOM: DOMHelper,
 
-    render: function () {
+    initialize: function () {
         if (this.registry.hasPreviousSession()) {
             this.registry.loadState();
         } else {
             this.registry.loadMockState();
         }
+    },
+
+    render: function () {
         this.renderDOM();
         this.setNodesHandlers();
         this.setResetButtonHandler();
