@@ -28,7 +28,7 @@ var NodeView = Backbone.View.extend({
     removeEvent: function () {
         this.registry.removeNode(this.model);
         this.registry.save();
-        this.el.remove();
+        this.remove();
     },
 
     editEvent: function (e) {
