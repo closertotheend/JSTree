@@ -24,7 +24,11 @@ var NodeView = Backbone.View.extend({
     },
 
     removeEvent: function (e) {
-        new RemoveIconClickEvent(e.toElement, this.registry);
+        var nodeId = this.DOM.getNodeDataId(this.el);
+        var nodeObject = this.registry.getNodeById(nodeId);
+        this.registry.removeNode(nodeObject);
+        this.registry.save();
+        this.el.remove();
     },
 
     editEvent: function (e) {
