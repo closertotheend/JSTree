@@ -1,46 +1,47 @@
-function NodeView(nodeRegistry, anchorId) {
-    var anchor = anchorId ? document.getElementById(anchorId) : DOMHelper.getDefaultAnchor();
-    var registry = nodeRegistry ? nodeRegistry : new NodeRegistry();
-    var DOM = DOMHelper;
-    var that = this;
+var NodeView = Backbone.View.extend({
 
-    this.render = function () {
-        if (registry.hasPreviousSession()) {
-            registry.loadState();
+    el: DOMHelper.getDefaultAnchor(),
+    registry: new NodeRegistry(),
+    DOM: DOMHelper,
+
+    render: function () {
+        if (this.registry.hasPreviousSession()) {
+            this.registry.loadState();
         } else {
-            registry.loadMockState();
+            this.registry.loadMockState();
         }
-        renderDOM();
-        setNodesHandlers();
-        setResetButtonHandler();
-        DOM.hideSubNodes();
-    };
+        this.renderDOM();
+        this.setNodesHandlers();
+        this.setResetButtonHandler();
+        this.DOM.hideSubNodes();
+    },
 
-    function renderDOM() {
-        var nodes = registry.getNodes();
+    renderDOM: function () {
+        var nodes = this.registry.getNodes();
         var html = '';
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
             html += node.getHtml();
         }
-        anchor.innerHTML = DOM.createResetButton() + html;
-    }
+        this.el.innerHTML = this.DOM.createResetButton() + html;
+    },
 
-    function setNodesHandlers() {
-        var nodes = DOM.getAllNodes();
+    setNodesHandlers: function () {
+        var nodes = this.DOM.getAllNodes();
         for (var i = 0; i < nodes.length; i++) {
-            new NodeEventHandler(nodes[i], registry);
+            new NodeEventHandler(nodes[i], this.registry);
         }
-    }
+    },
 
-    function setResetButtonHandler() {
-        DOM.getResetButton().addEventListener('click', function (e) {
-            registry.loadMockState();
+    setResetButtonHandler: function () {
+        var that = this;
+        this.DOM.getResetButton().addEventListener('click', function (e) {
+            that.registry.loadMockState();
             that.render();
         });
     }
 
-}
+});
 
 
 
