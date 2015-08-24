@@ -1,3 +1,3 @@
-var nodeView = new NodeView();
+var nodeView = new NodeWidgetView();
 nodeView.render();
 

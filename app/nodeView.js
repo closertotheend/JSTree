@@ -1,4 +1,4 @@
-var NodeView = Backbone.View.extend({
+var NodeWidgetView = Backbone.View.extend({
 
     el: DOMHelper.getDefaultAnchor(),
     registry: new NodeRegistry(),
