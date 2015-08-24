@@ -6,6 +6,8 @@ var NodeView = Backbone.View.extend({
         var nodeElement = this.DOM.getIconsOfNode(this.el);
         this.registry = options.registry;
         this.DOM.makeCollapseIconClosed(nodeElement.collapseIcon);
+        var nodeId = this.DOM.getNodeDataId(this.el);
+        this.model = this.registry.getNodeById(nodeId);
     },
 
     events: {
@@ -23,10 +25,8 @@ var NodeView = Backbone.View.extend({
         new AddIconClickEvent(e.toElement, this.registry);
     },
 
-    removeEvent: function (e) {
-        var nodeId = this.DOM.getNodeDataId(this.el);
-        var nodeObject = this.registry.getNodeById(nodeId);
-        this.registry.removeNode(nodeObject);
+    removeEvent: function () {
+        this.registry.removeNode(this.model);
         this.registry.save();
         this.el.remove();
     },
