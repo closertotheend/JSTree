@@ -29,7 +29,7 @@ function EditIconClickHandler(editIcon, nodeRegistry) {
             var nodeId = DOM.getNodeDataId(node);
             var newName = DOM.getEditedNodeNameOfNodeEditForm(editNodeForm);
             var nodeObject = registry.getNodeById(nodeId);
-            nodeObject.name = newName;
+            nodeObject.set('name', newName);
             registry.save();
             DOM.changeNameOfNode(node, newName);
             editNodeForm.remove();

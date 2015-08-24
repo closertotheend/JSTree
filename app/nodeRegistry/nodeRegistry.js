@@ -16,7 +16,7 @@ function NodeRegistry() {
             for (var i = 0; i < dirtyNodes.length; i++) {
                 var dirtyNode = dirtyNodes[i];
                 if (dirtyNode.doesNotHaveId()) {
-                    dirtyNode.id = generateId();
+                    dirtyNode.set('id', generateId());
                     that.registerNode(dirtyNode);
                 }
                 cleanNodes.push(dirtyNode);
