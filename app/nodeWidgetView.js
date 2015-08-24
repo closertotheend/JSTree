@@ -17,6 +17,7 @@ var NodeWidgetView = Backbone.View.extend({
         this.setNodesHandlers();
         this.setResetButtonHandler();
         this.DOM.hideSubNodes();
+        return this;
     },
 
     renderDOM: function () {
