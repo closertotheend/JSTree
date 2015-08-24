@@ -1,15 +1,12 @@
-function AddIconClickHandler(addIcon, nodeRegistry) {
+function AddIconClickEvent(addIcon, nodeRegistry) {
     var DOM = DOMHelper;
     var registry = nodeRegistry;
 
-    addIcon.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var node = DOM.getNodeFromAddIcon(this);
-        if (DOM.newFolderFormDoesNotExist(node)) {
-            createNewForm(node);
-        }
-        DOM.openTreeViaCollapseIcon(DOM.getCollapseIconOfNode(node));
-    });
+    var node = DOM.getNodeFromAddIcon(addIcon);
+    if (DOM.newFolderFormDoesNotExist(node)) {
+        createNewForm(node);
+    }
+    DOM.openTreeViaCollapseIcon(DOM.getCollapseIconOfNode(node));
 
     function createNewForm(node) {
         DOM.removeEditOrNewNodeForm(node);

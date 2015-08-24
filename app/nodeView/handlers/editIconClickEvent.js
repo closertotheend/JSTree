@@ -1,14 +1,11 @@
-function EditIconClickHandler(editIcon, nodeRegistry) {
+function EditIconClickEvent(editIcon, nodeRegistry) {
     var DOM = DOMHelper;
     var registry = nodeRegistry;
 
-    editIcon.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var node = DOMHelper.getNodeFromEditIcon(this);
-        if (DOM.nodeEditFormDoesNotExist(node)) {
-            createEditForm(node);
-        }
-    });
+    var node = DOMHelper.getNodeFromEditIcon(editIcon);
+    if (DOM.nodeEditFormDoesNotExist(node)) {
+        createEditForm(node);
+    }
 
     function createEditForm(node) {
         DOM.removeEditOrNewNodeForm(node);
