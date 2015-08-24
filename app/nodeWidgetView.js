@@ -3,7 +3,6 @@ var NodeWidgetView = Backbone.View.extend({
     el: DOMHelper.getDefaultAnchor(),
     registry: new NodeRegistry(),
     DOM: DOMHelper,
-    that: this,
 
     initialize: function () {
         if (this.registry.hasPreviousSession()) {
@@ -31,12 +30,14 @@ var NodeWidgetView = Backbone.View.extend({
 
     setNodesHandlers: function () {
         var that = this;
-        _.map(this.DOM.getAllNodes(), function(node){ return new NodeEventHandler(node, that.registry) });
+        _.map(this.DOM.getAllNodes(), function (node) {
+            return new NodeView({el: node, registry: that.registry})
+        });
     },
 
     setResetButtonHandler: function () {
         var that = this;
-        this.DOM.getResetButton().addEventListener('click', function (e) {
+        this.DOM.getResetButton().addEventListener('click', function () {
             that.registry.loadMockState();
             that.render();
         });

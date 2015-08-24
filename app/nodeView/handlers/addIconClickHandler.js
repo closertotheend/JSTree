@@ -27,7 +27,7 @@ function AddIconClickHandler(addIcon, nodeRegistry) {
         saveButton.addEventListener('click', function (e) {
             var newFolderForm = DOM.getNewFolderFormFromCancelButton(this);
             var newNode = createNode(newFolderForm);
-            new NodeEventHandler(newNode, registry);
+            new NodeView({el: newNode, registry: registry});
             newFolderForm.remove();
         });
 
