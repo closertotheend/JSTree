@@ -10,9 +10,9 @@ var Node  = Backbone.Model.extend({
         html += '">';
         html += '<span class="collapse-indicator"></span>';
         if (this.isSuperNode()) {
-            html += '<span class="node-name super-node-name">' + name + '</span>';
+            html += '<span class="node-name super-node-name">' + this.get('name') + '</span>';
         } else {
-            html += '<span class="node-name sub-node-name">' + name + '</span>';
+            html += '<span class="node-name sub-node-name">' + this.get('name') + '</span>';
         }
 
         html += '<span class="add-node"></span><span class="edit-node"></span><span class="remove-node"></span>';

@@ -74,18 +74,18 @@ function NodeRegistry() {
     };
 
     this.loadMockState = function() {
-        var parent1 = new Node("C:/");
-        var parent2 = new Node("D:/");
-        var nodeJS = new Node("NodeJS");
-        var child1 = new Node("Program Files");
-        child1.addChild(new Node("Java"));
+        var parent1 = new Node({name:"C:/"});
+        var parent2 = new Node({name:"D:/"});
+        var nodeJS = new Node({name:"NodeJS"});
+        var child1 = new Node({name:"Program Files"});
+        child1.addChild(new Node({name:"Java"}));
         child1.addChild(nodeJS);
-        nodeJS.addChild(new Node('Grunt'));
-        nodeJS.addChild(new Node('Gulp'));
+        nodeJS.addChild(new Node({name:'Grunt'}));
+        nodeJS.addChild(new Node({name:'Gulp'}));
         parent1.addChild(child1);
-        var games = new Node("Games");
+        var games = new Node({name:"Games"});
         parent1.addChild(games);
-        games.addChild(new Node("Solitare"));
+        games.addChild(new Node({name:"Solitare"}));
         this.setNodes([parent1, parent2]);
         this.save();
     };
