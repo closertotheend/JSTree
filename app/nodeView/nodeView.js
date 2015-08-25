@@ -18,20 +18,24 @@ var NodeView = Backbone.View.extend({
     },
 
     toggleTree: function (e) {
+        e.stopPropagation();
         this.DOM.toggleTreeViaCollapseIcon(e.toElement);
     },
 
     addEvent: function (e) {
+        e.stopPropagation();
         new AddIconClickEvent(e.toElement, this.registry);
     },
 
-    removeEvent: function () {
+    removeEvent: function (e) {
+        e.stopPropagation();
         this.registry.removeNode(this.model);
         this.registry.save();
         this.remove();
     },
 
     editEvent: function (e) {
+        e.stopPropagation();
         new EditNodeView({el: e.toElement, registry: this.registry});
     }
 
