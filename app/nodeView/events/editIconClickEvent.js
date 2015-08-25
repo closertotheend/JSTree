@@ -1,41 +1,44 @@
-function EditIconClickEvent(editIcon, nodeRegistry) {
-    var DOM = DOMHelper;
-    var registry = nodeRegistry;
+var EditNodeView = Backbone.View.extend({
+    DOM: DOMHelper,
 
-    var node = DOMHelper.getNodeFromEditIcon(editIcon);
-    if (DOM.nodeEditFormDoesNotExist(node)) {
-        createEditForm(node);
-    }
+    initialize: function(options){
+        this.registry = options.registry;
+        var node = DOMHelper.getNodeFromEditIcon(this.el);
+        if (this.DOM.nodeEditFormDoesNotExist(node)) {
+            this.createEditForm(node);
+        }
+    },
 
-    function createEditForm(node) {
-        DOM.removeEditOrNewNodeForm(node);
-        var editForm = DOM.createEditNodeForm();
-        var firstSubNodeOfNode = DOM.getFirstSubNodeOfNode(node);
+    createEditForm: function(node) {
+        this.DOM.removeEditOrNewNodeForm(node);
+        var editForm = this.DOM.createEditNodeForm();
+        var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(node);
         node.insertBefore(editForm, firstSubNodeOfNode);
-        var saveButton = DOM.getSaveButtonOfNodeEditForm(editForm);
-        setSaveButtonClickHandler(saveButton);
-        var cancelButton = DOM.getCancelButtonOfNodeEditForm(editForm);
-        setCancelButtonClickHandler(cancelButton);
+        var saveButton = this.DOM.getSaveButtonOfNodeEditForm(editForm);
+        this.setSaveButtonClickHandler(saveButton);
+        var cancelButton = this.DOM.getCancelButtonOfNodeEditForm(editForm);
+        this.setCancelButtonClickHandler(cancelButton);
+    },
 
-    }
-
-    function setSaveButtonClickHandler(saveButton) {
+    setSaveButtonClickHandler: function(saveButton) {
+        var that = this;
         saveButton.addEventListener('click', function (e) {
-            var editNodeForm = DOM.getNodeEditFormFromSaveButton(this);
-            var node = DOM.getNodeOfNodeEditForm(editNodeForm);
-            var nodeId = DOM.getNodeDataId(node);
-            var newName = DOM.getEditedNodeNameOfNodeEditForm(editNodeForm);
-            var nodeObject = registry.getNodeById(nodeId);
+            var editNodeForm = that.DOM.getNodeEditFormFromSaveButton(this);
+            var node = that.DOM.getNodeOfNodeEditForm(editNodeForm);
+            var nodeId = that.DOM.getNodeDataId(node);
+            var newName = that.DOM.getEditedNodeNameOfNodeEditForm(editNodeForm);
+            var nodeObject = that.registry.getNodeById(nodeId);
             nodeObject.set('name', newName);
-            registry.save();
-            DOM.changeNameOfNode(node, newName);
+            that.registry.save();
+            that.DOM.changeNameOfNode(node, newName);
             editNodeForm.remove();
         });
-    }
+    },
 
-    function setCancelButtonClickHandler(cancelButton) {
+    setCancelButtonClickHandler: function(cancelButton) {
         cancelButton.addEventListener('click', function (e) {
-            DOM.getNodeEditFormFromCancelButton(this).remove();
+            this.DOM.getNodeEditFormFromCancelButton(this).remove();
         });
     }
-}
+
+});

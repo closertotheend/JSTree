@@ -32,7 +32,7 @@ var NodeView = Backbone.View.extend({
     },
 
     editEvent: function (e) {
-        new EditIconClickEvent(e.toElement, this.registry);
+        new EditNodeView({el: e.toElement, registry: this.registry});
     }
 
 });
