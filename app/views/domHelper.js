@@ -50,10 +50,6 @@ var DOMHelper = {
         return node.getElementsByClassName('node-name')[0].innerHTML = newName;
     },
 
-    getParentNodeOfNode: function (node) {
-        return node.parent.getElementsByClassName('node')[0]
-    },
-
     removeEditOrNewNodeForm: function (node) {
         var nodeEditCurrentForm = node.getElementsByClassName('edit-current-node')[0];
         if (nodeEditCurrentForm) {
@@ -65,18 +61,6 @@ var DOMHelper = {
         }
     },
     //ICONS
-    getNodeFromAddIcon: function (addIcon) {
-        return addIcon.parentNode;
-    },
-
-    getNodeFromRemoveIcon: function (removeIcon) {
-        return removeIcon.parentNode;
-    },
-
-    getNodeFromEditIcon: function (editIcon) {
-        return editIcon.parentNode;
-    },
-
     getNodeFromCollapseIcon: function (collapseIcon) {
         return collapseIcon.parentNode;
     },
@@ -89,34 +73,11 @@ var DOMHelper = {
         return newFolderForm.getElementsByClassName('insert-new-node-name')[0];
     },
 
-    getCancelButtonOfNewFolderForm: function (newFolderForm) {
-        return newFolderForm.getElementsByClassName('insert-new-node-cancel-button')[0];
-    },
-
-    getSaveButtonOfNewFolderForm: function (newFolderForm) {
-        return newFolderForm.getElementsByClassName('insert-new-node-save-button')[0];
-    },
-
-    getNodeOfNewFolderForm: function (newFolderForm) {
-        return newFolderForm.parentNode;
-    },
-
     insertHtmlAfterNewFolderForm: function (newFolderForm, html) {
         newFolderForm.insertAdjacentHTML('afterend', html);
     },
 
-    getNewFolderFormFromCancelButton: function (cancelButton) {
-        return cancelButton.parentNode;
-    },
-
     // NODE EDIT FORM
-    getCancelButtonOfNodeEditForm: function (nodeEditForm) {
-        return nodeEditForm.getElementsByClassName('edit-current-node-cancel-button')[0];
-    },
-
-    getNodeOfNodeEditForm: function (nodeEditForm) {
-        return nodeEditForm.parentNode;
-    },
 
     getNewNodeNameInputOfNodeEditForm: function (nodeEditForm) {
         return nodeEditForm.getElementsByClassName('edit-current-node-name')[0];
@@ -126,17 +87,6 @@ var DOMHelper = {
         return this.getNewNodeNameInputOfNodeEditForm(nodeEditForm).value;
     },
 
-    getSaveButtonOfNodeEditForm: function (nodeEditForm) {
-        return nodeEditForm.getElementsByClassName('edit-current-node-save-button')[0];
-    },
-
-    getNodeEditFormFromCancelButton: function (cancelButton) {
-        return cancelButton.parentNode;
-    },
-
-    getNodeEditFormFromSaveButton: function (saveButton) {
-        return saveButton.parentNode;
-    },
     // ELEMENTS
     newFolderFormDoesNotExist: function (element) {
         return element.getElementsByClassName('insert-new-node').length == 0;
