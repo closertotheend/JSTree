@@ -30,16 +30,6 @@ var DOMHelper = {
         return node.getElementsByClassName('node-name')[0].innerHTML = newName;
     },
 
-    removeEditOrNewNodeForm: function (node) {
-        var nodeEditCurrentForm = node.getElementsByClassName('edit-current-node')[0];
-        if (nodeEditCurrentForm) {
-            nodeEditCurrentForm.remove();
-        }
-        var newNodeForm = node.getElementsByClassName('insert-new-node')[0];
-        if (newNodeForm) {
-            newNodeForm.remove();
-        }
-    },
     //ICONS
     getNodeFromCollapseIcon: function (collapseIcon) {
         return collapseIcon.parentNode;
@@ -68,13 +58,6 @@ var DOMHelper = {
     },
 
     // ELEMENTS
-    newFolderFormDoesNotExist: function (element) {
-        return element.getElementsByClassName('insert-new-node').length == 0;
-    },
-
-    nodeEditFormDoesNotExist: function (element) {
-        return element.getElementsByClassName('edit-current-node').length == 0;
-    },
 
     isNode: function (element) {
         return element.classList.contains('node');
@@ -158,10 +141,6 @@ var DOMHelper = {
     // RESET BUTTON
     createResetButton: function () {
         return '<button id="reset">Reset</button>';
-    },
-
-    getResetButton: function () {
-        return document.getElementById('reset');
     },
 
     // ANIMATIONS AND HIGH LEVEL

@@ -3,6 +3,7 @@ var EditNodeView = Backbone.View.extend({
 
     initialize: function (options) {
         this.registry = options.registry;
+        this.node = options.node;
     },
 
     events: {
@@ -11,33 +12,27 @@ var EditNodeView = Backbone.View.extend({
     },
 
     render: function () {
-        if (this.DOM.nodeEditFormDoesNotExist(this.el)) {
-            this.createEditForm();
-        }
-        this.editNodeForm = this.$el.find('.edit-current-node')[0];
+        this.createEditForm();
+        this.setElement(this.node.getElementsByClassName('edit-current-node')[0]);
+        return this;
     },
 
     createEditForm: function () {
-        this.destroyEditOrAddForm();
         var editForm = this.DOM.createEditNodeForm();
-        var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(this.el);
-        this.el.insertBefore(editForm, firstSubNodeOfNode);
-    },
-
-    destroyEditOrAddForm: function () {
-        this.DOM.removeEditOrNewNodeForm(this.el);
+        var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(this.node);
+        this.node.insertBefore(editForm, firstSubNodeOfNode);
     },
 
     save: function () {
-        var newName = this.DOM.getEditedNodeNameOfNodeEditForm(this.editNodeForm);
+        var newName = this.DOM.getEditedNodeNameOfNodeEditForm(this.node);
         this.model.set('name', newName);
         this.registry.save();
-        this.DOM.changeNameOfNode(this.el, newName);
-        this.editNodeForm.remove();
+        this.DOM.changeNameOfNode(this.node, newName);
+        this.remove();
     },
 
     cancel: function () {
-        this.editNodeForm.remove();
+        this.remove();
     }
 
 });

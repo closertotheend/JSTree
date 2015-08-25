@@ -12,12 +12,8 @@ var AddNodeView = Backbone.View.extend({
     },
 
     render: function () {
-        var node = this.node;
-        if (this.DOM.newFolderFormDoesNotExist(node)) {
-            this.DOM.removeEditOrNewNodeForm(node);
-            this.createNewForm(node);
-        }
-        this.DOM.openTreeViaCollapseIcon(this.DOM.getCollapseIconOfNode(node));
+        this.createNewForm(this.node);
+        this.DOM.openTreeViaCollapseIcon(this.DOM.getCollapseIconOfNode(this.node));
         this.setElement(this.node.getElementsByClassName('insert-new-node'));
     },
 
