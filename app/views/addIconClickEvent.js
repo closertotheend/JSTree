@@ -14,7 +14,7 @@ var AddNodeView = Backbone.View.extend({
 
     render: function () {
         this.createNewForm();
-        this.DOM.openTreeViaCollapseIcon(this.DOM.getCollapseIconOfNode(this.node));
+        this.DOM.openTreeOfNode(this.node);
         this.setElement(this.node.getElementsByClassName('insert-new-node'));
     },
 

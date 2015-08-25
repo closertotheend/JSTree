@@ -3,9 +3,8 @@ var NodeView = Backbone.View.extend({
     DOM: DOMHelper,
 
     initialize: function (options) {
-        var collapseIcon = this.DOM.getCollapseIconOfNode(this.el);
         this.registry = options.registry;
-        this.DOM.makeCollapseIconClosed(collapseIcon);
+        this.DOM.makeCollapseIconOfNodeClosed(this.el);
         var nodeId = this.DOM.getNodeDataId(this.el);
         this.model = this.registry.getNodeById(nodeId);
     },
@@ -19,7 +18,7 @@ var NodeView = Backbone.View.extend({
 
     toggleTree: function (e) {
         e.stopPropagation();
-        this.DOM.toggleTreeViaCollapseIcon(e.toElement);
+        this.DOM.toggleTreeOfNode(this.el);
     },
 
     addEvent: function (e) {

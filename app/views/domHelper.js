@@ -30,10 +30,6 @@ var DOMHelper = {
         return node.getElementsByClassName('node-name')[0].innerHTML = newName;
     },
 
-    //ICONS
-    getNodeFromCollapseIcon: function (collapseIcon) {
-        return collapseIcon.parentNode;
-    },
     //NEW FOLDER FORM
     getNodeNameOfNewFolderForm: function (newFolderForm) {
         return $(newFolderForm.find('.insert-new-node-name')[0]).val();
@@ -45,12 +41,8 @@ var DOMHelper = {
 
     // NODE EDIT FORM
 
-    getNewNodeNameInputOfNodeEditForm: function (nodeEditForm) {
-        return nodeEditForm.getElementsByClassName('edit-current-node-name')[0];
-    },
-
     getEditedNodeNameOfNodeEditForm: function (nodeEditForm) {
-        return this.getNewNodeNameInputOfNodeEditForm(nodeEditForm).value;
+        return nodeEditForm.getElementsByClassName('edit-current-node-name')[0].value;
     },
 
     // ELEMENTS
@@ -63,14 +55,16 @@ var DOMHelper = {
         return element.classList.contains('insert-new-node');
     },
 
-    makeCollapseIconClosed: function (element) {
-        element.classList.remove('node-collapse-open');
-        element.classList.add('node-collapse-closed');
+    makeCollapseIconOfNodeClosed: function (node) {
+        var collapseIcon = this.getCollapseIconOfNode(node);
+        collapseIcon.classList.remove('node-collapse-open');
+        collapseIcon.classList.add('node-collapse-closed');
     },
 
-    makeCollapseIconOpen: function (element) {
-        element.classList.add('node-collapse-open');
-        element.classList.remove('node-collapse-closed');
+    makeCollapseIconOpen: function (node) {
+        var collapseIcon = this.getCollapseIconOfNode(node);
+        collapseIcon.classList.add('node-collapse-open');
+        collapseIcon.classList.remove('node-collapse-closed');
     },
 
     isCollapseIconClosed: function (element) {
@@ -102,34 +96,25 @@ var DOMHelper = {
         }
     },
 
-    toggleTreeViaCollapseIcon: function (collapseIcon) {
+    toggleTreeOfNode: function (node) {
+        var collapseIcon = this.getCollapseIconOfNode(node);
         if (this.isCollapseIconClosed(collapseIcon)) {
-            this.openTreeViaCollapseIcon(collapseIcon)
+            this.openTreeOfNode(node)
         } else if (this.isCollapseIconOpen(collapseIcon)) {
-            this.closeTreeViaCollapseIcon(collapseIcon)
+            this.closeTreeViaNode(node)
         }
     },
 
-    closeTreeViaCollapseIcon: function (collapseIcon) {
-        var node = this.getNodeFromCollapseIcon(collapseIcon);
-        for (var i = 0; i < node.childNodes.length; i++) {
-            var childNodeElement = node.childNodes[i];
-            if (this.isCloseable(childNodeElement)) {
-                $(childNodeElement).hide();
-            }
-        }
-        this.makeCollapseIconClosed(collapseIcon);
+    closeTreeViaNode: function (node) {
+        var that = this;
+        _(node.childNodes).filter(function(n){return that.isCloseable(n)}).map(function(n){ $(n).hide(); });
+        this.makeCollapseIconOfNodeClosed(node);
     },
 
-    openTreeViaCollapseIcon: function (collapseIcon) {
-        var node = this.getNodeFromCollapseIcon(collapseIcon);
-        for (var i = 0; i < node.childNodes.length; i++) {
-            var childNodeElement = node.childNodes[i];
-            if (this.isCloseable(childNodeElement)) {
-                $(childNodeElement).show();
-            }
-        }
-        this.makeCollapseIconOpen(collapseIcon);
+    openTreeOfNode: function (node) {
+        var that = this;
+        _(node.childNodes).filter(function(n){return that.isCloseable(n)}).map(function(n){ $(n).show(); });
+        this.makeCollapseIconOpen(node);
     },
 
     isCloseable: function (childNodeElement) {
