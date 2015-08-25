@@ -12,17 +12,19 @@ var NodeWidgetView = Backbone.View.extend({
         }
     },
 
+    events: {
+        "click #reset": 'reset'
+    },
+
     render: function () {
         this.renderDOM();
         this.DOM.hideSubNodes();
         this.setNodesViews();
-        this.setResetButtonHandler();
         return this;
     },
 
     renderDOM: function () {
-        var that = this;
-        var html = _.reduce(that.registry.getNodes(), function (html, node) {
+        var html = _.reduce(this.registry.getNodes(), function (html, node) {
             return html + node.getHtml();
         }, '');
         this.el.innerHTML = this.DOM.createResetButton() + html;
@@ -35,12 +37,9 @@ var NodeWidgetView = Backbone.View.extend({
         });
     },
 
-    setResetButtonHandler: function () {
-        var that = this;
-        this.DOM.getResetButton().addEventListener('click', function () {
-            that.registry.loadMockState();
-            that.render();
-        });
+    reset: function () {
+        this.registry.loadMockState();
+        this.render();
     }
 
 });
