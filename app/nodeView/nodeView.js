@@ -36,7 +36,8 @@ var NodeView = Backbone.View.extend({
 
     editEvent: function (e) {
         e.stopPropagation();
-        new EditNodeView({el: e.toElement, registry: this.registry});
+        var editNodeView = new EditNodeView({el: this.el, model: this.model, registry: this.registry});
+        editNodeView.render();
     }
 
 });
