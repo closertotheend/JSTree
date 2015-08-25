@@ -26,7 +26,7 @@ var AddNodeView = Backbone.View.extend({
     save: function () {
         var newNode = this.createNode(this.el);
         new NodeView({el: newNode, registry: this.registry});
-        this.el.remove();
+        this.remove();
     },
 
     createNode: function () {
@@ -39,7 +39,7 @@ var AddNodeView = Backbone.View.extend({
     },
 
     cancel: function () {
-        this.el.remove();
+        this.remove();
     }
 
 });
