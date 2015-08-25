@@ -1,5 +1,6 @@
 var EditNodeView = Backbone.View.extend({
     DOM: DOMHelper,
+    template: DOMHelper.createEditNodeForm(),
 
     initialize: function (options) {
         this.registry = options.registry;
@@ -18,9 +19,8 @@ var EditNodeView = Backbone.View.extend({
     },
 
     createEditForm: function () {
-        var editForm = this.DOM.createEditNodeForm();
         var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(this.node);
-        this.node.insertBefore(editForm, firstSubNodeOfNode);
+        $(firstSubNodeOfNode).before(this.template);
     },
 
     save: function () {

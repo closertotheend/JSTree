@@ -1,5 +1,6 @@
 var AddNodeView = Backbone.View.extend({
     DOM: DOMHelper,
+    template: DOMHelper.newFolderFormTemplate(),
 
     initialize: function (options) {
         this.registry = options.registry;
@@ -18,9 +19,8 @@ var AddNodeView = Backbone.View.extend({
     },
 
     createNewForm: function () {
-        var newFolderForm = this.DOM.createNewFolderForm();
         var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(this.node);
-        $(firstSubNodeOfNode).before(newFolderForm);
+        $(firstSubNodeOfNode).before(this.template);
     },
 
     save: function () {
@@ -30,7 +30,7 @@ var AddNodeView = Backbone.View.extend({
     },
 
     createNode: function () {
-        var newNodeName = this.DOM.getNodeNameOfNewFolderForm(this.el);
+        var newNodeName = this.DOM.getNodeNameOfNewFolderForm(this.$el);
         var newNodeObject = this.registry.createNode(newNodeName);
         this.model.addChild(newNodeObject);
         this.registry.save();

@@ -36,11 +36,7 @@ var DOMHelper = {
     },
     //NEW FOLDER FORM
     getNodeNameOfNewFolderForm: function (newFolderForm) {
-        return this.getNewNodeInputOfNewFolderForm(newFolderForm).value;
-    },
-
-    getNewNodeInputOfNewFolderForm: function (newFolderForm) {
-        return newFolderForm.getElementsByClassName('insert-new-node-name')[0];
+        return $(newFolderForm.find('.insert-new-node-name')[0]).val();
     },
 
     insertHtmlAfterNewFolderForm: function (newFolderForm, html) {
@@ -93,31 +89,12 @@ var DOMHelper = {
         element.style.display = 'block';
     },
     // FORMS
-    createNewFolderForm: function () {
+    newFolderFormTemplate: function () {
         return '<div class="insert-new-node" style="display: block;"><input type="text" class="insert-new-node-name"><input type="button" class="insert-new-node-save-button" value="Save"><input type="button" class="insert-new-node-cancel-button" value="Cancel"></div>'
     },
 
     createEditNodeForm: function () {
-        var newFolderDiv = document.createElement("div");
-        newFolderDiv.className = "edit-current-node";
-
-        var folderNameInput = document.createElement("input");
-        folderNameInput.type = 'text';
-        folderNameInput.className = 'edit-current-node-name';
-        newFolderDiv.appendChild(folderNameInput);
-
-        var nodeNameInputSubmit = document.createElement("input");
-        nodeNameInputSubmit.type = 'button';
-        nodeNameInputSubmit.className = 'edit-current-node-save-button';
-        nodeNameInputSubmit.value = 'Save';
-        newFolderDiv.appendChild(nodeNameInputSubmit);
-
-        var nodeNameInputCancel = document.createElement("input");
-        nodeNameInputCancel.type = 'button';
-        nodeNameInputCancel.className = 'edit-current-node-cancel-button';
-        nodeNameInputCancel.value = 'Cancel';
-        newFolderDiv.appendChild(nodeNameInputCancel);
-        return newFolderDiv;
+        return '<div class="edit-current-node"><input type="text" class="edit-current-node-name"><input type="button" class="edit-current-node-save-button" value="Save"><input type="button" class="edit-current-node-cancel-button" value="Cancel"></div>';
     },
     // RESET BUTTON
     createResetButton: function () {
