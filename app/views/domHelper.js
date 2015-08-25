@@ -81,19 +81,12 @@ var DOMHelper = {
         return element.classList.contains('node-collapse-open')
     },
 
-    hide: function (element) {
-        element.style.display = 'none';
-    },
-
-    show: function (element) {
-        element.style.display = 'block';
-    },
     // FORMS
     newFolderFormTemplate: function () {
         return '<div class="insert-new-node" style="display: block;"><input type="text" class="insert-new-node-name"><input type="button" class="insert-new-node-save-button" value="Save"><input type="button" class="insert-new-node-cancel-button" value="Cancel"></div>'
     },
 
-    createEditNodeForm: function () {
+    editNodeFormTemplate: function () {
         return '<div class="edit-current-node"><input type="text" class="edit-current-node-name"><input type="button" class="edit-current-node-save-button" value="Save"><input type="button" class="edit-current-node-cancel-button" value="Cancel"></div>';
     },
     // RESET BUTTON
@@ -105,7 +98,7 @@ var DOMHelper = {
     hideSubNodes: function () {
         var subNodes = this.getAllSubNodes();
         for (var i = 0; i < subNodes.length; i++) {
-            this.hide(subNodes[i]);
+            $(subNodes[i]).hide();
         }
     },
 
@@ -122,7 +115,7 @@ var DOMHelper = {
         for (var i = 0; i < node.childNodes.length; i++) {
             var childNodeElement = node.childNodes[i];
             if (this.isCloseable(childNodeElement)) {
-                this.hide(childNodeElement);
+                $(childNodeElement).hide();
             }
         }
         this.makeCollapseIconClosed(collapseIcon);
@@ -133,7 +126,7 @@ var DOMHelper = {
         for (var i = 0; i < node.childNodes.length; i++) {
             var childNodeElement = node.childNodes[i];
             if (this.isCloseable(childNodeElement)) {
-                this.show(childNodeElement);
+                $(childNodeElement).show();
             }
         }
         this.makeCollapseIconOpen(collapseIcon);

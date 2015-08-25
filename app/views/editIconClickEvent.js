@@ -1,6 +1,6 @@
 var EditNodeView = Backbone.View.extend({
     DOM: DOMHelper,
-    template: DOMHelper.createEditNodeForm(),
+    template: DOMHelper.editNodeFormTemplate(),
 
     initialize: function (options) {
         this.registry = options.registry;

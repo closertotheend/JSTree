@@ -55,8 +55,8 @@ var NodeView = Backbone.View.extend({
     },
 
     destroySubViews: function(){
-        this.addNodeView.remove();
-        this.editNodeView.remove();
+        if(this.isInAddState()) this.addNodeView.remove();
+        if(this.isInEditState()) this.editNodeView.remove();
     },
 
     isInEditState: function(){
