@@ -13,6 +13,7 @@ var AddNodeView = Backbone.View.extend({
     render: function () {
         var node = this.el;
         if (this.DOM.newFolderFormDoesNotExist(node)) {
+            this.DOM.removeEditOrNewNodeForm(node);
             this.createNewForm(node);
         }
         this.DOM.openTreeViaCollapseIcon(this.DOM.getCollapseIconOfNode(node));
@@ -20,7 +21,6 @@ var AddNodeView = Backbone.View.extend({
     },
 
     createNewForm: function (node) {
-        this.DOM.removeEditOrNewNodeForm(node);
         var newFolderForm = this.DOM.createNewFolderForm();
         var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(node);
         node.insertBefore(newFolderForm, firstSubNodeOfNode);
@@ -33,15 +33,12 @@ var AddNodeView = Backbone.View.extend({
     },
 
     createNode: function () {
-        var parentNode = this.DOM.getNodeOfNewFolderForm(this.newNodeForm);
-        var parentNodeId = this.DOM.getNodeDataId(parentNode);
         var newNodeName = this.DOM.getNodeNameOfNewFolderForm(this.newNodeForm);
         var newNodeObject = this.registry.createNode(newNodeName);
-        var parentNodeObject = this.registry.getNodeById(parentNodeId);
-        parentNodeObject.addChild(newNodeObject);
+        this.model.addChild(newNodeObject);
         this.registry.save();
         this.DOM.insertHtmlAfterNewFolderForm(this.newNodeForm, newNodeObject.getHtml());
-        return this.DOM.getFirstSubNodeOfNode(parentNode);
+        return this.DOM.getFirstSubNodeOfNode(this.el);
     },
 
     cancel: function () {
