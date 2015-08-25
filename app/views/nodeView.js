@@ -11,9 +11,9 @@ var NodeView = Backbone.View.extend({
 
     events: {
         "click .collapse-indicator": "toggleTree",
-        "click .add-node": "addEvent",
-        "click .remove-node": "removeEvent",
-        "click .edit-node": "editEvent"
+        "click .add-node": "addNode",
+        "click .remove-node": "removeNode",
+        "click .edit-node": "editNode"
     },
 
     toggleTree: function (e) {
@@ -21,11 +21,10 @@ var NodeView = Backbone.View.extend({
         this.DOM.toggleTreeOfNode(this.el);
     },
 
-    addEvent: function (e) {
+    addNode: function (e) {
         e.stopPropagation();
         if (this.isInEditState()) {
             this.editNodeView.remove();
-            delete this.editNodeView;
         }
         if (!this.isInAddState()) {
             this.addNodeView = new AddNodeView({node: this.el, model: this.model, registry: this.registry});
@@ -33,19 +32,19 @@ var NodeView = Backbone.View.extend({
         }
     },
 
-    removeEvent: function (e) {
+    removeNode: function (e) {
         e.stopPropagation();
         this.registry.removeNode(this.model);
         this.registry.save();
-        this.destroySubViews();
+        if(this.addNodeView)this.addNodeView.remove();
+        if(this.editNodeView)this.editNodeView.remove();
         this.remove();
     },
 
-    editEvent: function (e) {
+    editNode: function (e) {
         e.stopPropagation();
         if(this.isInAddState()){
             this.addNodeView.remove();
-            delete this.addNodeView;
         }
         if (!this.isInEditState()) {
             this.editNodeView = new EditNodeView({node: this.el, model: this.model, registry: this.registry});
@@ -53,17 +52,13 @@ var NodeView = Backbone.View.extend({
         }
     },
 
-    destroySubViews: function(){
-        if(this.isInAddState()) this.addNodeView.remove();
-        if(this.isInEditState()) this.editNodeView.remove();
-    },
 
     isInEditState: function(){
-        return this.editNodeView;
+        return this.$el.children('.edit-current-node').length > 0
     },
 
     isInAddState: function(){
-        return this.addNodeView;
+        return this.$el.children('.insert-new-node').length > 0;
     }
 
 });

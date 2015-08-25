@@ -26,27 +26,6 @@ var DOMHelper = {
         return node.getAttribute("data-node-id");
     },
 
-    changeNameOfNode: function (node, newName) {
-        return node.getElementsByClassName('node-name')[0].innerHTML = newName;
-    },
-
-    //NEW FOLDER FORM
-    getNodeNameOfNewFolderForm: function (newFolderForm) {
-        return $(newFolderForm.find('.insert-new-node-name')[0]).val();
-    },
-
-    insertHtmlAfterNewFolderForm: function (newFolderForm, html) {
-        newFolderForm.insertAdjacentHTML('afterend', html);
-    },
-
-    // NODE EDIT FORM
-
-    getEditedNodeNameOfNodeEditForm: function (nodeEditForm) {
-        return nodeEditForm.getElementsByClassName('edit-current-node-name')[0].value;
-    },
-
-    // ELEMENTS
-
     isNode: function (element) {
         return element.classList.contains('node');
     },

@@ -19,8 +19,8 @@ var AddNodeView = Backbone.View.extend({
     },
 
     createNewForm: function () {
-        var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(this.node);
-        $(firstSubNodeOfNode).before(this.template);
+        var removeIcon = $(this.node).find('.remove-node').first();
+        $(removeIcon).after(this.template);
     },
 
     save: function () {
@@ -30,11 +30,11 @@ var AddNodeView = Backbone.View.extend({
     },
 
     createNode: function () {
-        var newNodeName = this.DOM.getNodeNameOfNewFolderForm(this.$el);
+        var newNodeName = this.$el.find('.insert-new-node-name').first().val();
         var newNodeObject = this.registry.createNode(newNodeName);
         this.model.addChild(newNodeObject);
         this.registry.save();
-        this.DOM.insertHtmlAfterNewFolderForm(this.el, newNodeObject.getHtml());
+        this.$el.before(newNodeObject.getHtml());
         return this.DOM.getFirstSubNodeOfNode(this.node);
     },
 

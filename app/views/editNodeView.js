@@ -19,15 +19,15 @@ var EditNodeView = Backbone.View.extend({
     },
 
     createEditForm: function () {
-        var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(this.node);
-        $(firstSubNodeOfNode).before(this.template);
+        var removeIcon = $(this.node).find('.remove-node').first();
+        $(removeIcon).after(this.template);
     },
 
     save: function () {
-        var newName = this.DOM.getEditedNodeNameOfNodeEditForm(this.node);
+        var newName = this.$el.find('.edit-current-node-name').first().val();
         this.model.set('name', newName);
         this.registry.save();
-        this.DOM.changeNameOfNode(this.node, newName);
+        $(this.node).find('.node-name').first().html(newName);
         this.remove();
     },
 
