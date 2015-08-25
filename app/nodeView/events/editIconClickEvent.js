@@ -36,8 +36,9 @@ var EditNodeView = Backbone.View.extend({
     },
 
     setCancelButtonClickHandler: function(cancelButton) {
+        var that = this;
         cancelButton.addEventListener('click', function (e) {
-            this.DOM.getNodeEditFormFromCancelButton(this).remove();
+            that.DOM.getNodeEditFormFromCancelButton(this).remove();
         });
     }
 
