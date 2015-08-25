@@ -94,26 +94,7 @@ var DOMHelper = {
     },
     // FORMS
     createNewFolderForm: function () {
-        var newFolderDiv = document.createElement("div");
-        newFolderDiv.className = "insert-new-node";
-
-        var folderNameInput = document.createElement("input");
-        folderNameInput.type = 'text';
-        folderNameInput.className = 'insert-new-node-name';
-        newFolderDiv.appendChild(folderNameInput);
-
-        var folderNameInputSubmit = document.createElement("input");
-        folderNameInputSubmit.type = 'button';
-        folderNameInputSubmit.className = 'insert-new-node-save-button';
-        folderNameInputSubmit.value = 'Save';
-        newFolderDiv.appendChild(folderNameInputSubmit);
-
-        var folderNameInputCancel = document.createElement("input");
-        folderNameInputCancel.type = 'button';
-        folderNameInputCancel.className = 'insert-new-node-cancel-button';
-        folderNameInputCancel.value = 'Cancel';
-        newFolderDiv.appendChild(folderNameInputCancel);
-        return newFolderDiv;
+        return '<div class="insert-new-node" style="display: block;"><input type="text" class="insert-new-node-name"><input type="button" class="insert-new-node-save-button" value="Save"><input type="button" class="insert-new-node-cancel-button" value="Cancel"></div>'
     },
 
     createEditNodeForm: function () {

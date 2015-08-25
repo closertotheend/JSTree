@@ -20,7 +20,7 @@ var AddNodeView = Backbone.View.extend({
     createNewForm: function () {
         var newFolderForm = this.DOM.createNewFolderForm();
         var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(this.node);
-        this.node.insertBefore(newFolderForm, firstSubNodeOfNode);
+        $(firstSubNodeOfNode).before(newFolderForm);
     },
 
     save: function () {
