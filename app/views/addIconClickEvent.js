@@ -12,15 +12,15 @@ var AddNodeView = Backbone.View.extend({
     },
 
     render: function () {
-        this.createNewForm(this.node);
+        this.createNewForm();
         this.DOM.openTreeViaCollapseIcon(this.DOM.getCollapseIconOfNode(this.node));
         this.setElement(this.node.getElementsByClassName('insert-new-node'));
     },
 
-    createNewForm: function (node) {
+    createNewForm: function () {
         var newFolderForm = this.DOM.createNewFolderForm();
-        var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(node);
-        node.insertBefore(newFolderForm, firstSubNodeOfNode);
+        var firstSubNodeOfNode = this.DOM.getFirstSubNodeOfNode(this.node);
+        this.node.insertBefore(newFolderForm, firstSubNodeOfNode);
     },
 
     save: function () {
