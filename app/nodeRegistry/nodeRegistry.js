@@ -1,5 +1,5 @@
 var NodeRegistry = Backbone.Collection.extend({
-    LOCAL_STORAGE_KEY: "nodeRegistryInfo",
+    LOCAL_STORAGE_KEY: "nodeRegistryInfoNew",
     counter: 0,
     allNodes: {},
     nodes: [],
