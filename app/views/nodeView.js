@@ -24,7 +24,7 @@ var NodeView = Backbone.View.extend({
 
     addEvent: function (e) {
         e.stopPropagation();
-        var addNodeView = new AddNodeView({el: this.el, model: this.model, registry: this.registry});
+        var addNodeView = new AddNodeView({node: this.el, model: this.model, registry: this.registry});
         addNodeView.render();
     },
 
