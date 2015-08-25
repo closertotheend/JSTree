@@ -1,5 +1,6 @@
 define(['app/views/domHelper.js'], function (DOMHelper) {
     return Backbone.View.extend({
+
         DOM: DOMHelper,
         template: DOMHelper.editNodeFormTemplate(),
 

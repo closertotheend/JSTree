@@ -71,9 +71,9 @@ define([], function () {
         // ANIMATIONS AND HIGH LEVEL
         hideSubNodes: function () {
             var subNodes = this.getAllSubNodes();
-            for (var i = 0; i < subNodes.length; i++) {
-                $(subNodes[i]).hide();
-            }
+            _.each(subNodes, function (node) {
+                $(node).hide();
+            });
         },
 
         toggleTreeOfNode: function (node) {

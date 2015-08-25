@@ -52,7 +52,6 @@ define(['app/views/domHelper.js', 'app/views/addNodeView.js', 'app/views/editNod
             }
         },
 
-
         isInEditState: function () {
             return this.$el.children('.edit-current-node').length > 0
         },
