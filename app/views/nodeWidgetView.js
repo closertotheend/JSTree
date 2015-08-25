@@ -15,7 +15,7 @@ var NodeWidgetView = Backbone.View.extend({
     render: function () {
         this.renderDOM();
         this.DOM.hideSubNodes();
-        this.setNodesHandlers();
+        this.setNodesViews();
         this.setResetButtonHandler();
         return this;
     },
@@ -28,7 +28,7 @@ var NodeWidgetView = Backbone.View.extend({
         this.el.innerHTML = this.DOM.createResetButton() + html;
     },
 
-    setNodesHandlers: function () {
+    setNodesViews: function () {
         var that = this;
         _.map(this.DOM.getAllNodes(), function (node) {
             return new NodeView({el: node, registry: that.registry})

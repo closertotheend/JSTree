@@ -3,9 +3,9 @@ var NodeView = Backbone.View.extend({
     DOM: DOMHelper,
 
     initialize: function (options) {
-        var nodeElement = this.DOM.getIconsOfNode(this.el);
+        var collapseIcon = this.DOM.getCollapseIconOfNode(this.el);
         this.registry = options.registry;
-        this.DOM.makeCollapseIconClosed(nodeElement.collapseIcon);
+        this.DOM.makeCollapseIconClosed(collapseIcon);
         var nodeId = this.DOM.getNodeDataId(this.el);
         this.model = this.registry.getNodeById(nodeId);
     },

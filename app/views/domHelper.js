@@ -14,28 +14,8 @@ var DOMHelper = {
 
     //NODE
 
-    getIconsOfNode: function (node) {
-        var collapseIcon = this.getCollapseIconOfNode(node);
-        var addIcon = this.getAddIconOfNode(node);
-        var removeIcon = this.getRemoveIconOfNode(node);
-        var editIcon = this.getEditIconOfNode(node);
-        return {collapseIcon: collapseIcon, addIcon: addIcon, removeIcon: removeIcon, editIcon: editIcon};
-    },
-
     getCollapseIconOfNode: function (node) {
         return node.getElementsByClassName('collapse-indicator')[0];
-    },
-
-    getAddIconOfNode: function (node) {
-        return node.getElementsByClassName('add-node')[0];
-    },
-
-    getRemoveIconOfNode: function (node) {
-        return node.getElementsByClassName('remove-node')[0];
-    },
-
-    getEditIconOfNode: function (node) {
-        return node.getElementsByClassName('edit-node')[0];
     },
 
     getFirstSubNodeOfNode: function (node) {
