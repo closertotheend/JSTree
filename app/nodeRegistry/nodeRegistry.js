@@ -1,40 +1,39 @@
-function NodeRegistry() {
-    var LOCAL_STORAGE_KEY = "nodeRegistryInfo";
+var NodeRegistry = Backbone.Collection.extend({
+    LOCAL_STORAGE_KEY: "nodeRegistryInfo",
+    counter: 0,
+    allNodes: {},
+    nodes: [],
 
-    this.counter = 0;
-    var allNodes = {};
-    var nodes = [];
-    var that = this;
-    var deserializer = new Deserializer(this);
-    var serializer = new Serializer(this);
+    initialize: function () {
+        this.deserializer = new Deserializer(this);
+        this.serializer = new Serializer(this);
+    },
 
-    this.setNodes = function (dirtyNodes) {
-        nodes = setNodeIdsIfNotSetAndRegisterThem(dirtyNodes);
+    setNodes: function (dirtyNodes) {
+        var that = this;
+        this.nodes = setNodeIdsIfNotSetAndRegisterThem(dirtyNodes);
 
         function setNodeIdsIfNotSetAndRegisterThem(dirtyNodes) {
-            var cleanNodes = [];
-            for (var i = 0; i < dirtyNodes.length; i++) {
-                var dirtyNode = dirtyNodes[i];
+            return _(dirtyNodes).map(function (dirtyNode) {
                 if (dirtyNode.doesNotHaveId()) {
-                    dirtyNode.set('id', generateId());
+                    dirtyNode.set('id', that.generateId());
                     that.registerNode(dirtyNode);
                 }
-                cleanNodes.push(dirtyNode);
                 if (dirtyNode.hasChildNodes()) {
                     setNodeIdsIfNotSetAndRegisterThem(dirtyNode.getChildNodes())
                 }
-            }
-            return cleanNodes;
+                return dirtyNode;
+            });
         }
-    };
+    },
 
-    this.createNode = function (name) {
-        var node = new Node({name: name, id: generateId()});
+    createNode: function (name) {
+        var node = new Node({name: name, id: this.generateId()});
         this.registerNode(node);
         return node;
-    };
+    },
 
-    this.removeNode = function (node) {
+    removeNode: function (node) {
         if (node.isSuperNode()) {
             var nodes = this.getNodes();
             nodes.splice(nodes.indexOf(node), 1);
@@ -42,56 +41,56 @@ function NodeRegistry() {
             var childNodes = node.getParentNode().getChildNodes();
             childNodes.splice(childNodes.indexOf(node), 1);
         }
-    };
+    },
 
-    this.save = function () {
-        var data = serializer.serialize();
-        localStorage.setItem(LOCAL_STORAGE_KEY, data);
+    save: function () {
+        var data = this.serializer.serialize();
+        localStorage.setItem(this.LOCAL_STORAGE_KEY, data);
         return data;
-    };
+    },
 
-    this.hasPreviousSession = function () {
-        return localStorage.getItem(LOCAL_STORAGE_KEY);
-    };
+    hasPreviousSession: function () {
+        return localStorage.getItem(this.LOCAL_STORAGE_KEY);
+    },
 
-    this.loadState = function () {
-        var deserializedInfo = deserializer.deserialize(localStorage.getItem(LOCAL_STORAGE_KEY));
+    loadState: function () {
+        var deserializedInfo = this.deserializer.deserialize(localStorage.getItem(this.LOCAL_STORAGE_KEY));
         this.setNodes(deserializedInfo.nodes);
-        that.counter = parseInt(deserializedInfo.counter);
+        this.counter = parseInt(deserializedInfo.counter);
         return deserializedInfo;
-    };
+    },
 
-    this.getNodes = function () {
-        return nodes;
-    };
+    getNodes: function () {
+        return this.nodes;
+    },
 
-    this.getNodeById = function (id) {
-        return allNodes[id];
-    };
+    getNodeById: function (id) {
+        return this.allNodes[id];
+    },
 
-    this.registerNode = function (node){
-        allNodes[node.id] = node;
-    };
+    registerNode: function (node) {
+        this.allNodes[node.id] = node;
+    },
 
-    this.loadMockState = function() {
-        var parent1 = new Node({name:"C:/"});
-        var parent2 = new Node({name:"D:/"});
-        var nodeJS = new Node({name:"NodeJS"});
-        var child1 = new Node({name:"Program Files"});
-        child1.addChild(new Node({name:"Java"}));
+    loadMockState: function () {
+        var parent1 = new Node({name: "C:/"});
+        var parent2 = new Node({name: "D:/"});
+        var nodeJS = new Node({name: "NodeJS"});
+        var child1 = new Node({name: "Program Files"});
+        child1.addChild(new Node({name: "Java"}));
         child1.addChild(nodeJS);
-        nodeJS.addChild(new Node({name:'Grunt'}));
-        nodeJS.addChild(new Node({name:'Gulp'}));
+        nodeJS.addChild(new Node({name: 'Grunt'}));
+        nodeJS.addChild(new Node({name: 'Gulp'}));
         parent1.addChild(child1);
-        var games = new Node({name:"Games"});
+        var games = new Node({name: "Games"});
         parent1.addChild(games);
-        games.addChild(new Node({name:"Solitare"}));
+        games.addChild(new Node({name: "Solitare"}));
         this.setNodes([parent1, parent2]);
         this.save();
-    };
+    },
 
-    function generateId() {
-        return ++that.counter;
+    generateId: function () {
+        return ++this.counter;
     }
 
-}
+});
