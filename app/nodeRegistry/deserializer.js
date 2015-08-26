@@ -25,10 +25,10 @@ define(['app/model/node.js'], function (Node) {
             var node = new Node({name: jsonNode.name, id: jsonNode.id});
             that.registry.registerNode(node);
             if (jsonNode.childNodes && jsonNode.childNodes.length != 0) {
-                for (var i = 0; i < jsonNode.childNodes.length; i++) {
-                    var badNodeChild = jsonNode.childNodes[i];
+                _.each(jsonNode.childNodes, function (badNodeChild) {
                     node.addChild(deserializeJsonNode(badNodeChild));
-                }
+
+                });
             }
             return node;
         }
