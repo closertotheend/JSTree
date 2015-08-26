@@ -1,9 +1,9 @@
 define([], function () {
-    return function Serializer(registry) {
+    return function(registry) {
         this.registry = registry;
         var that = this;
 
-        this.serialize = function () {
+        this.serializeToJson = function () {
             var cache = [];
             var nodes = JSON.stringify(that.registry.getTopLevelNodes(), function (key, value) {
                 if (value !== null) {

@@ -46,7 +46,7 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
         },
 
         save: function () {
-            var data = this.serializer.serialize();
+            var data = this.serializer.serializeToJson();
             localStorage.setItem(this.LOCAL_STORAGE_KEY, data);
             return data;
         },
@@ -59,7 +59,6 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
             var deserializedInfo = this.deserializer.deserialize(localStorage.getItem(this.LOCAL_STORAGE_KEY));
             this.setTopLevelNodes(deserializedInfo.nodes);
             this.counter = parseInt(deserializedInfo.counter);
-            return deserializedInfo;
         },
 
         getTopLevelNodes: function () {

@@ -93,7 +93,7 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
         parent1.addChild(child1);
         parent1.addChild(child2);
         this.nodeRegistry.setTopLevelNodes([parent1, parent2]);
-        var serializedNodesJSONString = this.serializer.serialize(this.nodeRegistry);
+        var serializedNodesJSONString = this.serializer.serializeToJson(this.nodeRegistry);
         assert.ok(isJsonString(serializedNodesJSONString));
 
         function isJsonString(str) {
@@ -132,7 +132,7 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
         parent1.addChild(child1);
         parent1.addChild(child2);
         this.nodeRegistry.setTopLevelNodes([parent1]);
-        var serializedNodesJSONString = this.serializer.serialize(this.nodeRegistry);
+        var serializedNodesJSONString = this.serializer.serializeToJson(this.nodeRegistry);
 
         var loadState = this.deserilizer.deserialize(serializedNodesJSONString);
 
@@ -157,7 +157,7 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
     QUnit.test("Should check counter after deserialization", function (assert) {
         var parent1 = this.nodeRegistry.createNode('Parent1');
         this.nodeRegistry.setTopLevelNodes([parent1]);
-        var serializedJson = this.serializer.serialize(this.nodeRegistry);
+        var serializedJson = this.serializer.serializeToJson(this.nodeRegistry);
         var loadState = this.deserilizer.deserialize(serializedJson);
 
         assert.equal(parent1.id, loadState.counter);

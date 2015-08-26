@@ -1,13 +1,13 @@
 define(['app/model/node.js'], function (Node) {
-    return function Deserializer(registry) {
+    return function(registry) {
         this.registry = registry;
         var that = this;
 
         this.deserialize = function (json) {
-            var info = JSON.parse(json);
-            var jsonNodes = JSON.parse(info.nodes);
+            var parsedJson = JSON.parse(json);
+            var jsonNodes = JSON.parse(parsedJson.nodes);
             var nodes = deserializeJsonNodes(jsonNodes);
-            return {counter: JSON.parse(info.counter), nodes: nodes};
+            return {counter: JSON.parse(parsedJson.counter), nodes: nodes};
         };
 
         function deserializeJsonNodes(jsonNodes) {
