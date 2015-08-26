@@ -72,9 +72,9 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
         this.nodeRegistry.removeNode(child2);
         assert.equal(parent.getChildNodes().length, 0);
 
-        assert.equal(this.nodeRegistry.getNodes().length, 1);
+        assert.equal(this.nodeRegistry.getTopLevelNodes().length, 1);
         this.nodeRegistry.removeNode(parent);
-        assert.equal(this.nodeRegistry.getNodes().length, 0);
+        assert.equal(this.nodeRegistry.getTopLevelNodes().length, 0);
     });
 
     QUnit.module("Serilizer and deserializer", {
