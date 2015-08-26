@@ -20,10 +20,7 @@ define([], function () {
             html += '<span class="add-node"></span><span class="edit-node"></span><span class="remove-node"></span>';
             if (this.hasChildNodes()) {
                 var childNodes = this.get('childNodes');
-                for (var i = 0; i < childNodes.length; i++) {
-                    var node = childNodes[i];
-                    html += node.getHtml();
-                }
+                html =_.reduce(childNodes, function(html, node){ return html += node.getHtml() }, html);
             }
             html += '</div>';
             return html;

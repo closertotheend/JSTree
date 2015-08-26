@@ -3,7 +3,7 @@ define(['app/model/node.js'], function (Node) {
         this.registry = registry;
         var that = this;
 
-        this.deserialize = function (json) {
+        this.deserializeJson = function (json) {
             var parsedJson = JSON.parse(json);
             var jsonNodes = JSON.parse(parsedJson.nodes);
             var nodes = deserializeJsonNodes(jsonNodes);
@@ -11,14 +11,9 @@ define(['app/model/node.js'], function (Node) {
         };
 
         function deserializeJsonNodes(jsonNodes) {
-            var nodes = [];
-            for (var i = 0; i < jsonNodes.length; i++) {
-                var badNode = jsonNodes[i];
-                var node = deserializeJsonNode(badNode);
-                nodes.push(node);
-            }
-            return nodes;
-
+            return _.map(jsonNodes, function (jsonNode) {
+                return deserializeJsonNode(jsonNode)
+            });
         }
 
         function deserializeJsonNode(jsonNode) {

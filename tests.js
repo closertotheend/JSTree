@@ -134,7 +134,7 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
         this.nodeRegistry.setTopLevelNodes([parent1]);
         var serializedNodesJSONString = this.serializer.serializeToJson(this.nodeRegistry);
 
-        var loadState = this.deserilizer.deserialize(serializedNodesJSONString);
+        var loadState = this.deserilizer.deserializeJson(serializedNodesJSONString);
 
         var parent1Deserialized = loadState.nodes[0];
         assert.equal(parent1Deserialized.getId(), parent1.getId());
@@ -158,7 +158,7 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
         var parent1 = this.nodeRegistry.createNode('Parent1');
         this.nodeRegistry.setTopLevelNodes([parent1]);
         var serializedJson = this.serializer.serializeToJson(this.nodeRegistry);
-        var loadState = this.deserilizer.deserialize(serializedJson);
+        var loadState = this.deserilizer.deserializeJson(serializedJson);
 
         assert.equal(parent1.id, loadState.counter);
     });

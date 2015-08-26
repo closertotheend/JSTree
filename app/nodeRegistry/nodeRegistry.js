@@ -3,8 +3,8 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
     return Backbone.Collection.extend({
         LOCAL_STORAGE_KEY: "nodeRegistryInfoNew",
         counter: 0,
-        allNodes: {},
-        nodes: [],
+        allRegisteredNodes: {},
+        topLevelNodes: [],
 
         initialize: function () {
             this.deserializer = new Deserializer(this);
@@ -13,7 +13,7 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
 
         setTopLevelNodes: function (dirtyNodes) {
             var that = this;
-            this.nodes = setNodeIdsIfNotSetAndRegisterThem(dirtyNodes);
+            this.topLevelNodes = setNodeIdsIfNotSetAndRegisterThem(dirtyNodes);
 
             function setNodeIdsIfNotSetAndRegisterThem(dirtyNodes) {
                 return _(dirtyNodes).map(function (dirtyNode) {
@@ -56,21 +56,21 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
         },
 
         loadState: function () {
-            var deserializedInfo = this.deserializer.deserialize(localStorage.getItem(this.LOCAL_STORAGE_KEY));
+            var deserializedInfo = this.deserializer.deserializeJson(localStorage.getItem(this.LOCAL_STORAGE_KEY));
             this.setTopLevelNodes(deserializedInfo.nodes);
             this.counter = parseInt(deserializedInfo.counter);
         },
 
         getTopLevelNodes: function () {
-            return this.nodes;
+            return this.topLevelNodes;
         },
 
         getNodeById: function (id) {
-            return this.allNodes[id];
+            return this.allRegisteredNodes[id];
         },
 
         registerNode: function (node) {
-            this.allNodes[node.id] = node;
+            this.allRegisteredNodes[node.id] = node;
         },
 
         loadMockState: function () {
