@@ -11,7 +11,7 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
             this.serializer = new Serializer(this);
         },
 
-        setNodes: function (dirtyNodes) {
+        setTopLevelNodes: function (dirtyNodes) {
             var that = this;
             this.nodes = setNodeIdsIfNotSetAndRegisterThem(dirtyNodes);
 
@@ -37,7 +37,7 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
 
         removeNode: function (node) {
             if (node.isSuperNode()) {
-                var nodes = this.getNodes();
+                var nodes = this.getTopLevelNodes();
                 nodes.splice(nodes.indexOf(node), 1);
             } else {
                 var childNodes = node.getParentNode().getChildNodes();
@@ -57,12 +57,12 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
 
         loadState: function () {
             var deserializedInfo = this.deserializer.deserialize(localStorage.getItem(this.LOCAL_STORAGE_KEY));
-            this.setNodes(deserializedInfo.nodes);
+            this.setTopLevelNodes(deserializedInfo.nodes);
             this.counter = parseInt(deserializedInfo.counter);
             return deserializedInfo;
         },
 
-        getNodes: function () {
+        getTopLevelNodes: function () {
             return this.nodes;
         },
 
@@ -87,7 +87,7 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
             var games = new Node({name: "Games"});
             parent1.addChild(games);
             games.addChild(new Node({name: "Solitare"}));
-            this.setNodes([parent1, parent2]);
+            this.setTopLevelNodes([parent1, parent2]);
             this.save();
         },
 

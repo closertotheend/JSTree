@@ -64,7 +64,7 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
         var child2 = this.nodeRegistry.createNode('Child2');
         parent.addChild(child1);
         parent.addChild(child2);
-        this.nodeRegistry.setNodes([parent]);
+        this.nodeRegistry.setTopLevelNodes([parent]);
 
         assert.equal(parent.getChildNodes().length, 2);
         this.nodeRegistry.removeNode(child1);
@@ -92,7 +92,7 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
         var child2 = this.nodeRegistry.createNode('Child2');
         parent1.addChild(child1);
         parent1.addChild(child2);
-        this.nodeRegistry.setNodes([parent1, parent2]);
+        this.nodeRegistry.setTopLevelNodes([parent1, parent2]);
         var serializedNodesJSONString = this.serializer.serialize(this.nodeRegistry);
         assert.ok(isJsonString(serializedNodesJSONString));
 
@@ -114,7 +114,7 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
         parent1.addChild(child1);
         parent1.addChild(child2);
 
-        this.nodeRegistry.setNodes([parent1, parent2]);
+        this.nodeRegistry.setTopLevelNodes([parent1, parent2]);
 
         assert.ok(parent1.id);
         assert.ok(parent2.id);
@@ -131,7 +131,7 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
         var child2 = this.nodeRegistry.createNode('Child2');
         parent1.addChild(child1);
         parent1.addChild(child2);
-        this.nodeRegistry.setNodes([parent1]);
+        this.nodeRegistry.setTopLevelNodes([parent1]);
         var serializedNodesJSONString = this.serializer.serialize(this.nodeRegistry);
 
         var loadState = this.deserilizer.deserialize(serializedNodesJSONString);
@@ -156,7 +156,7 @@ require(paths, function (Node, NodeRegistry, Serializer, Deserializer) {
 
     QUnit.test("Should check counter after deserialization", function (assert) {
         var parent1 = this.nodeRegistry.createNode('Parent1');
-        this.nodeRegistry.setNodes([parent1]);
+        this.nodeRegistry.setTopLevelNodes([parent1]);
         var serializedJson = this.serializer.serialize(this.nodeRegistry);
         var loadState = this.deserilizer.deserialize(serializedJson);
 

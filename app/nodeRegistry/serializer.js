@@ -5,7 +5,7 @@ define([], function () {
 
         this.serialize = function () {
             var cache = [];
-            var nodes = JSON.stringify(that.registry.getNodes(), function (key, value) {
+            var nodes = JSON.stringify(that.registry.getTopLevelNodes(), function (key, value) {
                 if (value !== null) {
                     if (cache.indexOf(value) !== -1) {
                         // Circular reference found, discard key

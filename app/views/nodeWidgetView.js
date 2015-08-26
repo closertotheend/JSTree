@@ -24,7 +24,7 @@ define(['app/views/nodeView.js', 'app/views/domHelper.js' ,'app/nodeRegistry/nod
         },
 
         renderDOM: function () {
-            var html = _.reduce(this.registry.getNodes(), function (html, node) {
+            var html = _.reduce(this.registry.getTopLevelNodes(), function (html, node) {
                 return html + node.getHtml();
             }, '');
             this.el.innerHTML = DOMHelper.resetButtonTemplate() + html;
