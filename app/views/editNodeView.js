@@ -26,7 +26,7 @@ define(['app/views/domHelper.js'], function (DOMHelper) {
         save: function () {
             var newName = this.$el.find('.edit-current-node-name').first().val();
             this.model.set('name', newName);
-            this.registry.save();
+            this.registry.saveState();
             $(this.node).find('.node-name').first().html(newName);
             this.remove();
         },

@@ -35,7 +35,7 @@ define(['app/views/domHelper.js'], function (DOMHelper) {
             var newNodeName = this.$el.find('.insert-new-node-name').first().val();
             var newNodeObject = this.registry.createNode(newNodeName);
             this.model.addChild(newNodeObject);
-            this.registry.save();
+            this.registry.saveState();
             this.$el.before(newNodeObject.getHtml());
             return DOMHelper.getFirstSubNodeOfNode(this.node);
         },

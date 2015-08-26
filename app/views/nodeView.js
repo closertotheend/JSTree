@@ -34,7 +34,7 @@ define(['app/views/domHelper.js', 'app/views/addNodeView.js', 'app/views/editNod
         removeNode: function (e) {
             e.stopPropagation();
             this.registry.removeNode(this.model);
-            this.registry.save();
+            this.registry.saveState();
             if (this.addNodeView)this.addNodeView.remove();
             if (this.editNodeView)this.editNodeView.remove();
             this.remove();

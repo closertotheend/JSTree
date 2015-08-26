@@ -45,7 +45,7 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
             }
         },
 
-        save: function () {
+        saveState: function () {
             var data = this.serializer.serializeToJson();
             localStorage.setItem(this.LOCAL_STORAGE_KEY, data);
             return data;
@@ -87,7 +87,7 @@ define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegist
             parent1.addChild(games);
             games.addChild(new Node({name: "Solitare"}));
             this.setTopLevelNodes([parent1, parent2]);
-            this.save();
+            this.saveState();
         },
 
         generateId: function () {
