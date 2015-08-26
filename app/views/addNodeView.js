@@ -1,7 +1,5 @@
 define(['app/views/domHelper.js'], function (DOMHelper) {
     return Backbone.View.extend({
-
-        DOM: DOMHelper,
         template: DOMHelper.newFolderFormTemplate(),
 
         initialize: function (options) {
@@ -16,7 +14,7 @@ define(['app/views/domHelper.js'], function (DOMHelper) {
 
         render: function () {
             this.createNewForm();
-            this.DOM.openTreeOfNode(this.node);
+            DOMHelper.openTreeOfNode(this.node);
             this.setElement(this.node.getElementsByClassName('insert-new-node'));
         },
 
@@ -39,7 +37,7 @@ define(['app/views/domHelper.js'], function (DOMHelper) {
             this.model.addChild(newNodeObject);
             this.registry.save();
             this.$el.before(newNodeObject.getHtml());
-            return this.DOM.getFirstSubNodeOfNode(this.node);
+            return DOMHelper.getFirstSubNodeOfNode(this.node);
         },
 
         cancel: function () {

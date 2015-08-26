@@ -1,11 +1,10 @@
 define(['app/views/domHelper.js', 'app/views/addNodeView.js', 'app/views/editNodeView.js'], function (DOMHelper, AddNodeView, EditNodeView) {
     return Backbone.View.extend({
-        DOM: DOMHelper,
 
         initialize: function (options) {
             this.registry = options.registry;
-            this.DOM.makeCollapseIconOfNodeClosed(this.el);
-            var nodeId = this.DOM.getNodeDataId(this.el);
+            DOMHelper.makeCollapseIconOfNodeClosed(this.el);
+            var nodeId = DOMHelper.getNodeDataId(this.el);
             this.model = this.registry.getNodeById(nodeId);
         },
 
@@ -18,7 +17,7 @@ define(['app/views/domHelper.js', 'app/views/addNodeView.js', 'app/views/editNod
 
         toggleTree: function (e) {
             e.stopPropagation();
-            this.DOM.toggleTreeOfNode(this.el);
+            DOMHelper.toggleTreeOfNode(this.el);
         },
 
         addNode: function (e) {

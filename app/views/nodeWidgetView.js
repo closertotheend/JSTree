@@ -3,7 +3,6 @@ define(['app/views/nodeView.js', 'app/views/domHelper.js' ,'app/nodeRegistry/nod
 
         el: DOMHelper.getDefaultAnchor(),
         registry: new NodeRegistry(),
-        DOM: DOMHelper,
 
         initialize: function () {
             if (this.registry.hasPreviousSession()) {
@@ -19,7 +18,7 @@ define(['app/views/nodeView.js', 'app/views/domHelper.js' ,'app/nodeRegistry/nod
 
         render: function () {
             this.renderDOM();
-            this.DOM.hideSubNodes();
+            DOMHelper.hideSubNodes();
             this.setNodesViews();
             return this;
         },
@@ -28,17 +27,20 @@ define(['app/views/nodeView.js', 'app/views/domHelper.js' ,'app/nodeRegistry/nod
             var html = _.reduce(this.registry.getNodes(), function (html, node) {
                 return html + node.getHtml();
             }, '');
-            this.el.innerHTML = this.DOM.resetButtonTemplate() + html;
+            this.el.innerHTML = DOMHelper.resetButtonTemplate() + html;
         },
 
         setNodesViews: function () {
             var that = this;
-            _.map(this.DOM.getAllNodes(), function (node) {
+            this.nodeViews = _.map(DOMHelper.getAllNodes(), function (node) {
                 return new NodeView({el: node, registry: that.registry})
             });
         },
 
         reset: function () {
+            _.each(this.nodeViews, function (nodeView) {
+                nodeView.remove();
+            });
             this.registry.loadMockState();
             this.render();
         }

@@ -1,4 +1,4 @@
-define(['app/model/node.js','app/nodeRegistry/deserializer.js','app/nodeRegistry/serializer.js'], function (Node, Deserializer, Serializer) {
+define(['app/model/node.js', 'app/nodeRegistry/deserializer.js', 'app/nodeRegistry/serializer.js'], function (Node, Deserializer, Serializer) {
 
     return Backbone.Collection.extend({
         LOCAL_STORAGE_KEY: "nodeRegistryInfoNew",
