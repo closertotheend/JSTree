@@ -14,7 +14,6 @@ define([], function () {
         },
 
         //NODE
-
         getCollapseIconOfNode: function (node) {
             return node.getElementsByClassName('collapse-indicator')[0];
         },
@@ -25,14 +24,6 @@ define([], function () {
 
         getNodeDataId: function (node) {
             return node.getAttribute("data-node-id");
-        },
-
-        isNode: function (element) {
-            return element.classList.contains('node');
-        },
-
-        isNewNodeForm: function (element) {
-            return element.classList.contains('insert-new-node');
         },
 
         makeCollapseIconOfNodeClosed: function (node) {
@@ -47,6 +38,15 @@ define([], function () {
             collapseIcon.classList.remove('node-collapse-closed');
         },
 
+        // ELEMENTS
+        isNode: function (element) {
+            return element.classList.contains('node');
+        },
+
+        isNewNodeForm: function (element) {
+            return element.classList.contains('insert-new-node');
+        },
+
         isCollapseIconClosed: function (element) {
             return element.classList.contains('node-collapse-closed')
         },
@@ -55,7 +55,7 @@ define([], function () {
             return element.classList.contains('node-collapse-open')
         },
 
-        // FORMS
+        // TEMPLATES
         newFolderFormTemplate: function () {
             return '<div class="insert-new-node"><input type="text" class="insert-new-node-name"><input type="button" class="insert-new-node-save-button" value="Save"><input type="button" class="insert-new-node-cancel-button" value="Cancel"></div>'
         },
@@ -63,7 +63,6 @@ define([], function () {
         editNodeFormTemplate: function () {
             return '<div class="edit-current-node"><input type="text" class="edit-current-node-name"><input type="button" class="edit-current-node-save-button" value="Save"><input type="button" class="edit-current-node-cancel-button" value="Cancel"></div>';
         },
-        // RESET BUTTON
         resetButtonTemplate: function () {
             return '<button id="reset">Reset</button>';
         },
