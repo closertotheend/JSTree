@@ -28,7 +28,7 @@ define(['app/views/nodeView.js', 'app/views/domHelper.js' ,'app/nodeRegistry/nod
             var html = _.reduce(this.registry.getNodes(), function (html, node) {
                 return html + node.getHtml();
             }, '');
-            this.el.innerHTML = this.DOM.createResetButton() + html;
+            this.el.innerHTML = this.DOM.resetButtonTemplate() + html;
         },
 
         setNodesViews: function () {

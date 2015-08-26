@@ -57,14 +57,14 @@ define([], function () {
 
         // FORMS
         newFolderFormTemplate: function () {
-            return '<div class="insert-new-node" style="display: block;"><input type="text" class="insert-new-node-name"><input type="button" class="insert-new-node-save-button" value="Save"><input type="button" class="insert-new-node-cancel-button" value="Cancel"></div>'
+            return '<div class="insert-new-node"><input type="text" class="insert-new-node-name"><input type="button" class="insert-new-node-save-button" value="Save"><input type="button" class="insert-new-node-cancel-button" value="Cancel"></div>'
         },
 
         editNodeFormTemplate: function () {
             return '<div class="edit-current-node"><input type="text" class="edit-current-node-name"><input type="button" class="edit-current-node-save-button" value="Save"><input type="button" class="edit-current-node-cancel-button" value="Cancel"></div>';
         },
         // RESET BUTTON
-        createResetButton: function () {
+        resetButtonTemplate: function () {
             return '<button id="reset">Reset</button>';
         },
 
