@@ -22,7 +22,6 @@ define(['app/model/node.js'], function (Node) {
             if (jsonNode.childNodes && jsonNode.childNodes.length != 0) {
                 _.each(jsonNode.childNodes, function (badNodeChild) {
                     node.addChild(deserializeJsonNode(badNodeChild));
-
                 });
             }
             return node;
